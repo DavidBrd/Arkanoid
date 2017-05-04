@@ -6,6 +6,7 @@ public class Model {
 	private Racket racket;
 	private int score;
 	private int ballNumber;
+	private View view;
 	
 	public Model(Racket racket) {
 		
@@ -15,15 +16,8 @@ public class Model {
 		float racketWidth = (0.15f * frameWidth);
 		float racketHeight = (0.02f * frameHeight);
 		System.out.println((int) racketWidth+"  "+ (int) racketHeight);
-		//this.racket = new Racket(frameWidth, frameHeight, (int) racketWidth, (int) racketHeight);
-		this.racket = new Racket(frameWidth, frameHeight, 120, 150);
-		
-		//this.racket = new Racket(frameWidth, frameHeight, (int) (Math.floor(0.15*frameWidth)) ,(int) (Math.floor(0.02*frameHeight)));
-		//this.racket = new Racket(frameWidth, frameHeight, (int)(0.15*800), (int)(0.02*600));
-		//this.racket = new Racket(frameWidth, frameHeight, (int)(Math.floor(0)120), (int)(60));
-		//this.racket = new Racket(400,300,150,50);
-		System.out.println("Model.frameWidth = " + frameWidth+"BLABLA = " +(int) (0.15*frameWidth));
-		System.out.println("Model.frameHeight = " + frameHeight);
+		this.racket = new Racket((Main.WIDTH/2) - (Main.RACKET_WIDTH/2), (Main.HEIGHT - Main.RACKET_HEIGHT), Main.RACKET_WIDTH, Main.RACKET_HEIGHT);
+		//this.racket = new Racket(440, 560, 40, 20);
 	}
 	
 	public Racket getRacket() {return this.racket;}

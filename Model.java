@@ -1,5 +1,6 @@
 package david_nour.arcanoid;
 
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 

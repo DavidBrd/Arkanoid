@@ -3,6 +3,7 @@ package david_nour.arcanoid;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 
@@ -14,7 +15,7 @@ public class Ball extends Thread {
 	double speedY = Main.BALL_SPEED;
 	double size = Main.BALL_RADIUS;
 	boolean active;
-	private Shape ball;
+	private Shape collider;
 	
 	public Ball(int positionX, int positionY, double speedX, double speedY) {
 		this.positionX = positionX;
@@ -22,7 +23,7 @@ public class Ball extends Thread {
 		this.speedX = speedX;
 		this.speedY = speedY;
 		active = true;
-		this.ball = new Ellipse2D.Double(this.positionX, this.positionY, Main.BALL_RADIUS, Main.BALL_RADIUS);
+		this.collider = new Ellipse2D.Double(this.positionX, this.positionY, Main.BALL_RADIUS, Main.BALL_RADIUS);
 	}
 	
 	public Ball(int positionX, int positionY) {
@@ -36,11 +37,50 @@ public class Ball extends Thread {
 		Shape ball = new Ellipse2D.Double(this.positionX, this.positionY, Main.BALL_RADIUS, Main.BALL_RADIUS);
 		g2.draw(ball);
 		g2.fill(ball);
-		//g.setColor(Color.RED);
-		//g.fillOval((int) positionX, (int) positionY, (int) size, (int) size); 
 		
 	}
 	
+	public String checkSideCollision(Rectangle r2) {
+		
+		Rectangle r1 = this.collider.getBounds();
+		
+		double dX = (r1.getX() + r1.getWidth()/2) - (r2.getX() + r2.getWidth()/2);
+		double dY = (r1.getY() + r1.getHeight()/2) - (r2.getX() + r2.getHeight()/2);
+		
+		double width = (r1.getWidth() + r2.getWidth())/2;
+		double height = (r1.getHeight() + r2.getHeight())/2;
+		
+		double crossWidth = width * dY;
+		double crossHeight = height * dX;
+		
+		String collision="no collision";
+		
+		if (Math.abs(dX) <= width && Math.abs(dY) <= height) {
+			if (crossWidth > crossHeight) {
+				collision=(crossWidth>(-crossHeight))?"bottom":"left";
+			} else {
+	            collision=(crossWidth>-(crossHeight))?"right":"top";
+	        }
+	    }
+		
+		switch (collision) {
+		case "bottom":
+			this.bounceBottom();
+			break;
+		case "left":
+			this.bounceLeft();
+			break;
+		case "right":
+			this.bounceRight();
+			break;
+		case "top":
+			this.bounceTop();
+			break;
+		default:
+			break;
+		}
+		return(collision);	
+	}
 	
 	//TODO : intersect
 	public boolean checkBrickCollision(Ball ball, Brick brick) {
@@ -49,6 +89,7 @@ public class Ball extends Thread {
 	
 	//TODO : a mettre dans model?
 	public boolean checkRacketCollision(Ball ball, Racket racket) {
+		
 		if (1==2 /*mettre intersect*/) {			
 			ball.speedY = -Main.BALL_SPEED;
 			if (ball.positionX < racket.getPositionX())
@@ -76,6 +117,25 @@ public class Ball extends Thread {
 			positionY = 300;
 			System.out.println("- 1 vie");
 		}
+	}
+	
+	public void bounceBottom() {
+		this.speedY = -Main.BALL_SPEED;
+	}
+	
+	//La balle repart dans la direction inverse lors de la collision coté gauche (eventuellement à changer)
+	public void bounceLeft() {
+		this.speedX = -Main.BALL_SPEED;
+		this.speedY = -Main.BALL_SPEED;
+	}
+	
+	public void bounceRight() {
+		this.speedX = -Main.BALL_SPEED;
+		this.speedY = -Main.BALL_SPEED;
+	}
+	
+	public void bounceTop() {
+		this.speedY = -Main.BALL_SPEED;
 	}
 	
 	public void run() {

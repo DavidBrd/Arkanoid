@@ -15,13 +15,17 @@ public class Racket extends Thread {
 	private float maxSpeed;
 	private float speed;
 	private float positionCenteredX, positionCenteredY;
+	private Shape collider;
 	
 	public Racket(float positionX, float positionY, int width, int height) {		
 		this.width = width;
 		this.height = height;
 		this.positionX = positionX; 
-		this.positionY = positionY - Main.OFFSET;				
+		this.positionY = positionY - Main.OFFSET;
+		this.collider = new Rectangle2D.Double((int) this.positionX, (int) this.positionY, this.width, this.height);
 	}
+	
+	
 	
 	public boolean leftBlock() {return ((positionX+speed) <= 0);}
 	
@@ -58,6 +62,8 @@ public class Racket extends Thread {
 	public float getSpeed() {return this.speed;}
 	
 	public float getMaxSpeed() {return this.maxSpeed;}
+	
+	public Shape getShape() {return this.collider;}
 	
 	public void setSpeed(float speed) {this.speed = speed;}
 	

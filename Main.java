@@ -16,6 +16,7 @@ public class Main {
 		Model model = new Model(WIDTH, HEIGHT);
 		View view = new View(model, WIDTH, HEIGHT);
 		Controller controller = new Controller(model, view);
+		Collision collisionThread = new Collision(model);
 		
 		//Debug&Test
 		Racket racket = model.getRacket();
@@ -24,6 +25,7 @@ public class Main {
 			ball.start();
 		}	
 		racket.start();
+		collisionThread.start();
 
 		//System.out.println("Position Y = "+racket.getPositionY());
 	}

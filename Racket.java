@@ -3,6 +3,8 @@ package david_nour.arcanoid;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Shape;
+import java.awt.geom.Rectangle2D;
 
 import javax.swing.RepaintManager;
 
@@ -92,9 +94,8 @@ public class Racket extends Thread {
 	
 	public void paintRacket(Graphics gRaw) {
 		Graphics2D g = (Graphics2D) gRaw;	
-		
-		g.fillRect((int) this.positionX, (int) this.positionY, this.width, this.height);
-		g.setColor(Color.RED);
-		g.fillRect(0, 600, 400, 300);
+		Shape rect =  new Rectangle2D.Double((int) this.positionX, (int) this.positionY, this.width, this.height);
+		g.draw(rect);
+		g.fill(rect);
 	}
 }

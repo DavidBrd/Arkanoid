@@ -2,6 +2,9 @@ package david_nour.arcanoid;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Shape;
+import java.awt.geom.Ellipse2D;
 
 import javax.lang.model.type.IntersectionType;
 
@@ -11,6 +14,7 @@ public class Ball extends Thread {
 	double speedY = Main.BALL_SPEED;
 	double size = Main.BALL_RADIUS;
 	boolean active;
+	private Shape ball;
 	
 	public Ball(int positionX, int positionY, double speedX, double speedY) {
 		this.positionX = positionX;
@@ -18,6 +22,7 @@ public class Ball extends Thread {
 		this.speedX = speedX;
 		this.speedY = speedY;
 		active = true;
+		this.ball = new Ellipse2D.Double(this.positionX, this.positionY, Main.BALL_RADIUS, Main.BALL_RADIUS);
 	}
 	
 	public Ball(int positionX, int positionY) {
@@ -27,8 +32,12 @@ public class Ball extends Thread {
 	}
 	
 	public void paintBall(Graphics g) {
-		g.setColor(Color.RED);
-		g.fillOval((int) positionX, (int) positionY, (int) size, (int) size); 
+		Graphics2D g2 = (Graphics2D) g;
+		Shape ball = new Ellipse2D.Double(this.positionX, this.positionY, Main.BALL_RADIUS, Main.BALL_RADIUS);
+		g2.draw(ball);
+		g2.fill(ball);
+		//g.setColor(Color.RED);
+		//g.fillOval((int) positionX, (int) positionY, (int) size, (int) size); 
 		
 	}
 	

@@ -34,18 +34,25 @@ public class Ball extends Thread {
 	
 	public void paintBall(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
-		Shape ball = new Ellipse2D.Double(this.positionX, this.positionY, Main.BALL_RADIUS, Main.BALL_RADIUS);
-		g2.draw(ball);
-		g2.fill(ball);
+		this.collider = new Ellipse2D.Double(this.positionX, this.positionY, Main.BALL_RADIUS, Main.BALL_RADIUS);
+		g2.draw(collider);
+		g2.fill(collider);
 		
 	}
 	
-	public String checkSideCollision(Rectangle r2) {
-		
+	public double getSize() {return this.size;}
+	
+	public double getPositionX() {return this.positionX;}
+	
+	public double getPositionY() {return this.positionY;}
+	
+	public synchronized Shape getCollider() {return this.collider;}
+	
+	public String checkSideCollision(Racket r2) {
+		/*
 		Rectangle r1 = this.collider.getBounds();
 		
-		
-		/*double dX = (r1.getX() + r1.getWidth()/2) - (r2.getX() + r2.getWidth()/2);
+		double dX = (r1.getX() + r1.getWidth()/2) - (r2.getX() + r2.getWidth()/2);
 		double dY = (r1.getY() + r1.getHeight()/2) - (r2.getX() + r2.getHeight()/2);
 		
 		double width = (r1.getWidth() + r2.getWidth())/2;
@@ -62,16 +69,29 @@ public class Ball extends Thread {
 			} else {
 	            collision=(crossWidth>-(crossHeight))?"right":"top";
 	        }
-	    }*/
+	    }
 		
-		if(r1.intersects(r2))
-			return("collision");
-		else
-			return("no collision");
-		//return(collision);	
+		return(collision);*/
+		/*if ( ( (this.getPositionX() + this.getSize()/2) <= (r2.getPositionX() + 20) )
+				|| (  (this.getPositionX() + this.getSize()/2)>(r2.getWidth() - 20))) {
+				System.out.println("COIN");
+				return ""
+			}*/
+		
+		if(this.collider.getBounds().intersects(r2.getShape().getBounds())){
+			if ((this.getPositionX() + this.getSize()/2) <= (r2.getPositionX() + 20)
+				&& (this.speedX >=0)) 
+			{
+				System.out.println("COIN EFFECTIF on inverse");
+				return "topLeft";	
+			}
+		} else {return "no collision";}
+		return "collision";
 	}
 	
-	public void update() {
+	
+	
+	public synchronized void update() {
 		positionX += speedX;
 		positionY += speedY;
 	

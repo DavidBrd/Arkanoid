@@ -100,8 +100,8 @@ public class Racket extends Thread {
 	
 	public void paintRacket(Graphics gRaw) {
 		Graphics2D g = (Graphics2D) gRaw;	
-		Shape rect =  new Rectangle2D.Double((int) this.positionX, (int) this.positionY, this.width, this.height);
-		g.draw(rect);
-		g.fill(rect);
+		this.collider =  new Rectangle2D.Double((int) this.positionX, (int) this.positionY, this.width, this.height);
+		g.draw(collider);
+		g.fill(collider);
 	}
 }

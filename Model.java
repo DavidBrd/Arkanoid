@@ -21,7 +21,7 @@ public class Model {
 		float racketHeight = (0.02f * frameHeight);
 		//System.out.println((int) racketWidth+"  "+ (int) racketHeight);
 		this.racket = new Racket((Main.WIDTH/2) - (Main.RACKET_WIDTH/2), (Main.HEIGHT - Main.RACKET_HEIGHT), Main.RACKET_WIDTH, Main.RACKET_HEIGHT);
-		this.balls.add(new Ball(-10, -10));
+		//this.balls.add(new Ball(-10, -10, -Main.BALL_SPEED, -Main.BALL_SPEED));
 		this.balls.add(new Ball(400,-15,-Main.BALL_SPEED,-Main.BALL_SPEED));
 	}
 	

@@ -13,7 +13,24 @@ public class Collision extends Thread{
 	public void run() {
 		while(true){
 			for (Ball ball : this.model.getBalls()) {
-				ball.checkSideCollision(this.model.getRacket().getShape().getBounds());
+				String resCollision = ball.checkSideCollision(this.model.getRacket().getShape().getBounds()); 
+					System.out.println(resCollision);
+				switch (resCollision) {
+				case "bottom":
+					ball.bounceBottom();
+					break;
+				case "left":
+					ball.bounceLeft();
+					break;
+				case "right":
+					ball.bounceRight();
+					break;
+				case "top":
+					ball.bounceTop();
+					break;
+				default:
+					break;
+				}
 			}
 			try {
 				Thread.sleep(10);
@@ -22,5 +39,7 @@ public class Collision extends Thread{
 				e.printStackTrace();
 			}
 		}
+
 	}
 }
+

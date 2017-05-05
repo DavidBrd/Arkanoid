@@ -44,7 +44,8 @@ public class Ball extends Thread {
 		
 		Rectangle r1 = this.collider.getBounds();
 		
-		double dX = (r1.getX() + r1.getWidth()/2) - (r2.getX() + r2.getWidth()/2);
+		
+		/*double dX = (r1.getX() + r1.getWidth()/2) - (r2.getX() + r2.getWidth()/2);
 		double dY = (r1.getY() + r1.getHeight()/2) - (r2.getX() + r2.getHeight()/2);
 		
 		double width = (r1.getWidth() + r2.getWidth())/2;
@@ -61,44 +62,13 @@ public class Ball extends Thread {
 			} else {
 	            collision=(crossWidth>-(crossHeight))?"right":"top";
 	        }
-	    }
+	    }*/
 		
-		switch (collision) {
-		case "bottom":
-			this.bounceBottom();
-			break;
-		case "left":
-			this.bounceLeft();
-			break;
-		case "right":
-			this.bounceRight();
-			break;
-		case "top":
-			this.bounceTop();
-			break;
-		default:
-			break;
-		}
-		return(collision);	
-	}
-	
-	//TODO : intersect
-	public boolean checkBrickCollision(Ball ball, Brick brick) {
-		return true;
-	}
-	
-	//TODO : a mettre dans model?
-	public boolean checkRacketCollision(Ball ball, Racket racket) {
-		
-		if (1==2 /*mettre intersect*/) {			
-			ball.speedY = -Main.BALL_SPEED;
-			if (ball.positionX < racket.getPositionX())
-				ball.speedX = -Main.BALL_SPEED;
-			else
-				ball.speedX = Main.BALL_SPEED;
-			return true;
-		}
-		return false;
+		if(r1.intersects(r2))
+			return("collision");
+		else
+			return("no collision");
+		//return(collision);	
 	}
 	
 	public void update() {

@@ -1,11 +1,14 @@
 package david_nour.arcanoid;
 
 public class Main {
+	
 	public static final int WIDTH = 800;
 	public static final int HEIGHT = 600;
-	public static final int RACKET_WIDTH = (int) (0.15f * WIDTH);
-	public static final int RACKET_HEIGHT = (int) (0.025f * HEIGHT);
+	public static final int RACKET_WIDTH = 110;//(int) (0.15f * WIDTH);
+	public static final int RACKET_HEIGHT = 10;//(int) (0.025f * HEIGHT);
 	public static final int OFFSET = 50;
+	public static final int BALL_RADIUS = 20;
+	public static final double BALL_SPEED = 2f;
 	
 	public static void main(String[] args) {
 		
@@ -17,8 +20,12 @@ public class Main {
 		//Debug&Test
 		Racket racket = model.getRacket();
 		view.start();
+		for (Ball ball : model.getBalls()) {
+			ball.start();
+		}	
 		racket.start();
-		System.out.println("Position Y = "+racket.getPositionY());
+
+		//System.out.println("Position Y = "+racket.getPositionY());
 	}
 
 }

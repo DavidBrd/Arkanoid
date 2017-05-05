@@ -17,9 +17,14 @@ public class Controller implements KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		
-		if(e.getKeyChar() == 'd' && this.model.getRacket().getSpeed() <= this.model.getRacket().getMaxSpeed()) {
-			model.getRacket().incrementSpeed(acceleration);		
-		}
+		if(e.getKeyChar() == 'd' && this.model.getRacket().getSpeed() <= this.model.getRacket().getMaxSpeed() ) {
+				//model.getRacket().incrementSpeed(acceleration);
+				model.getRacket().moveRight();
+			}
+			
+			
+			//model.getRacket().incrementSpeed(acceleration);		
+		
 		
 		if(e.getKeyChar() == 'q' && this.model.getRacket().getSpeed() >= this.model.getRacket().getMaxSpeed()) {
 			model.getRacket().incrementSpeed(-acceleration);
@@ -31,13 +36,13 @@ public class Controller implements KeyListener {
 	@Override
 	public void keyReleased(KeyEvent e) {
 		
-		if(e.getKeyChar() == 'd') {
+		if(e.getKeyChar() == 'd' && (model.getRacket().getSpeed() != 0)) {
 			model.getRacket().setSpeed(0);
 			//System.out.println("Touche D pressée");
 			
 		}
 		
-		if(e.getKeyChar() == 'q') {
+		if(e.getKeyChar() == 'q' && (model.getRacket().getSpeed() != 0)) {
 			model.getRacket().setSpeed(0);
 		}
 		
@@ -45,7 +50,16 @@ public class Controller implements KeyListener {
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
+
+		if(e.getKeyChar() == 'd' && this.model.getRacket().getSpeed() <= this.model.getRacket().getMaxSpeed()) {
+			model.getRacket().incrementSpeed(acceleration);		
+		}
+		
+		if(e.getKeyChar() == 'q' && this.model.getRacket().getSpeed() >= this.model.getRacket().getMaxSpeed()) {
+			model.getRacket().incrementSpeed(-acceleration);
+		}
 		
 	}
+	
+	
 }

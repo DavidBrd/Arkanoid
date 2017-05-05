@@ -1,5 +1,6 @@
 package david_nour.arcanoid;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -20,13 +21,18 @@ public class View extends Thread{
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(800, 600);
 		frame.setResizable(false);
+		//frame.setLocationRelativeTo(null);
 		
 		Container cp = frame.getContentPane();
 		
+		
 		DisplayView display = new DisplayView(this.model);
 		display.setSize( new Dimension(800, 600));
+		//display.setLocation(0, 0);
 		display.setBackground(Color.RED);
 		cp.add(display);
+		
+		
 		
 		frame.setVisible(true);
 		
@@ -34,13 +40,16 @@ public class View extends Thread{
 	
 	public void run() {
 		while(true) {
+			
 			this.frame.repaint();
+			
 			try {
-				Thread.sleep(1);
+				Thread.sleep(10);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
 		}
 		
 	}
@@ -56,5 +65,8 @@ public class View extends Thread{
 		
 		public void paintComponent(Graphics g) {			
 			model.getRacket().paintRacket(g);
+			for (Ball ball : model.getBalls()) {
+				ball.paintBall(g);
+			}
 		}
 	}

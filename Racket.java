@@ -21,12 +21,25 @@ public class Racket extends Thread {
 		this.positionY = positionY - Main.OFFSET;				
 	}
 	
-	//TODO : a déplacer dans le controller
-	private void calibrerPosition(int racketWidth, int racketHeight) {
-		this.positionX = this.positionX + Main.WIDTH/2;
-		this.positionY = this.positionY + Main.HEIGHT;
+	public boolean leftBlock() {return ((positionX+speed) <= 0);}
+	
+	public float getRightEnd() {return (this.positionCenteredX + this.width);}
+	
+	public void moveLeft() {
+		if (leftBlock()) {
+			speed = -10;
+		} else {
+			speed = 0f;
+		}
 	}
 	
+	public void moveRight() {
+		if (getRightEnd() < Main.WIDTH) {
+			speed = +10;
+		} else {
+			speed = 0f;
+		}
+	}
 	
 	public float getCenteredPositionX() {return this.positionX;} //TODO : retourne la position centrée 
 	
@@ -35,6 +48,10 @@ public class Racket extends Thread {
 	public float getPositionX() {return this.positionX;}
 	
 	public float getPositionY() {return this.positionY;}
+	
+	public float getWidth() {return this.width;}
+	
+	public float getHeight() {return this.height;}
 	
 	public float getSpeed() {return this.speed;}
 	
@@ -50,12 +67,22 @@ public class Racket extends Thread {
 		this.speed += amount;
 	}
 	
+	public void checkRestraint() {
+		if ( this.positionX < 0) {this.setPositionX(0);}
+		if ( this.positionX >= (Main.WIDTH - this.width)) {this.setPositionX(Main.WIDTH - this.width);}
+	}
+	
+	
 	public void run() {
 		while(true) {
-			this.positionX += this.speed;			
+			
+			checkRestraint();
+			//if(this.positionCenteredX >= 400) {this.setPositionX(780);}
+			//System.out.println("Position x = "+this.positionX+" Position x - rw = "+(this.positionX-120));
+			this.positionX += this.speed; // Mettre dans une fonction uopdate? 		
 			try {
 				//System.out.println("Thread fonctinne");
-				Thread.sleep(33);
+				Thread.sleep(16);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

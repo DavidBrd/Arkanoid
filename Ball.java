@@ -3,11 +3,8 @@ package david_nour.arcanoid;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
-
-import javax.lang.model.type.IntersectionType;
 
 public class Ball extends Thread {
 	double positionX, positionY;
@@ -16,6 +13,7 @@ public class Ball extends Thread {
 	double size = Main.BALL_RADIUS;
 	boolean active;
 	private Shape collider;
+	public static int nbBall = 0;
 	
 	public Ball(int positionX, int positionY, double speedX, double speedY) {
 		this.positionX = positionX;
@@ -23,6 +21,7 @@ public class Ball extends Thread {
 		this.speedX = speedX;
 		this.speedY = speedY;
 		active = true;
+		nbBall++;
 		this.collider = new Ellipse2D.Double(this.positionX, this.positionY, Main.BALL_RADIUS, Main.BALL_RADIUS);
 	}
 	
@@ -34,6 +33,7 @@ public class Ball extends Thread {
 	
 	public void paintBall(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
+		g2.setColor(Color.BLACK);
 		this.collider = new Ellipse2D.Double(this.positionX, this.positionY, Main.BALL_RADIUS, Main.BALL_RADIUS);
 		g2.draw(collider);
 		g2.fill(collider);
@@ -48,45 +48,52 @@ public class Ball extends Thread {
 	
 	public synchronized Shape getCollider() {return this.collider;}
 	
-	public String checkSideCollision(Racket r2) {
-		/*
-		Rectangle r1 = this.collider.getBounds();
+	private boolean ballIntersectsBrick(Brick brick) {
+		return this.collider.getBounds().intersects(brick.getCollider().getBounds());
+	}
+	
+	public String checkCollisionBrick(Brick brick) {		
+		double xLeftBrick = brick.getPositionX();
+		double xRightBrick = xLeftBrick + brick.getWidth();	
 		
-		double dX = (r1.getX() + r1.getWidth()/2) - (r2.getX() + r2.getWidth()/2);
-		double dY = (r1.getY() + r1.getHeight()/2) - (r2.getX() + r2.getHeight()/2);
-		
-		double width = (r1.getWidth() + r2.getWidth())/2;
-		double height = (r1.getHeight() + r2.getHeight())/2;
-		
-		double crossWidth = width * dY;
-		double crossHeight = height * dX;
-		
-		String collision="no collision";
-		
-		if (Math.abs(dX) <= width && Math.abs(dY) <= height) {
-			if (crossWidth > crossHeight) {
-				collision=(crossWidth>(-crossHeight))?"bottom":"left";
+		if ( this.ballIntersectsBrick(brick) ) {
+			if ( xLeftBrick < this.positionX && this.positionX < xRightBrick ) {
+				if ( this.speedX > 0) {
+					return "top";
+				} else {
+					return "bottom";
+				}
 			} else {
-	            collision=(crossWidth>-(crossHeight))?"right":"top";
-	        }
-	    }
+				if ( this.speedX > 0 ) {
+					return "left";
+				} else {
+					return "right";
+				}
+			}
+		}
+		return "no collision";
+	}	
+	
+	private boolean ballIntersectsRacket(Racket racket) {
+		return this.collider.getBounds().intersects(racket.getCollider().getBounds());
+	}
+	
+	public String checkSideCollision(Racket racket) {					
 		
-		return(collision);*/
-		/*if ( ( (this.getPositionX() + this.getSize()/2) <= (r2.getPositionX() + 20) )
-				|| (  (this.getPositionX() + this.getSize()/2)>(r2.getWidth() - 20))) {
-				System.out.println("COIN");
-				return ""
-			}*/
-		
-		if(this.collider.getBounds().intersects(r2.getShape().getBounds())){
-			if ((this.getPositionX() + this.getSize()/2) <= (r2.getPositionX() + 20)
-				&& (this.speedX >=0)) 
-			{
-				System.out.println("COIN EFFECTIF on inverse");
+		if( this.ballIntersectsRacket(racket) ) {
+			
+			if ( (this.getPositionX() + this.getSize()/2) <= (racket.getPositionX() + 20) && ( this.speedX >= 0 ) ) {				
 				return "topLeft";	
 			}
-		} else {return "no collision";}
-		return "collision";
+			
+			if ( (this.getPositionX() + this.getSize()/2) > ( (racket.getPositionX()+racket.getWidth()) - 20 ) && ( this.speedX < 0 ) )  {
+				return "topRight";
+			} 
+			
+			return "top";
+		} 	
+			
+		return "no collision";
 	}
 	
 	
@@ -102,10 +109,10 @@ public class Ball extends Thread {
 		if ( positionY < 0) {
 			speedY = Main.BALL_SPEED;
 		} else if ( (positionY + size) > Main.HEIGHT) {
-			speedY = -Main.BALL_SPEED;
-			positionX = 400; //Positon de réaparition de la balle
-			positionY = 300;
-			System.out.println("- 1 vie");
+			//speedY = -Main.BALL_SPEED;
+			//positionX = 400; //Positon de réaparition de la balle
+			//positionY = 300;
+			
 		}
 	}
 	
@@ -120,8 +127,8 @@ public class Ball extends Thread {
 	}
 	
 	public void bounceRight() {
-		this.speedX = -Main.BALL_SPEED;
-		this.speedY = -Main.BALL_SPEED;
+		this.speedX = Main.BALL_SPEED;
+		this.speedY = Main.BALL_SPEED;
 	}
 	
 	public void bounceTop() {
@@ -129,7 +136,7 @@ public class Ball extends Thread {
 	}
 	
 	public void run() {
-		while(true){
+		while(!Model.paused){
 			update();
 			try {
 				Thread.sleep(10);

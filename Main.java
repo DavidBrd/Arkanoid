@@ -5,10 +5,12 @@ public class Main {
 	public static final int WIDTH = 800;
 	public static final int HEIGHT = 600;
 	public static final int RACKET_WIDTH = 110;//(int) (0.15f * WIDTH);
-	public static final int RACKET_HEIGHT = 10;//(int) (0.025f * HEIGHT);
+	public static final int RACKET_HEIGHT = 15;//(int) (0.025f * HEIGHT);
 	public static final int OFFSET = 50;
-	public static final int BALL_RADIUS = 20;
+	public static final int BALL_RADIUS = 18;
 	public static final double BALL_SPEED = 2f;
+	public static final double BRICK_HEIGHT = 20;
+	public static final double BRICK_WIDTH = 35;
 	
 	public static void main(String[] args) {
 		

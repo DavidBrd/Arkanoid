@@ -16,21 +16,30 @@ public class Racket extends Thread {
 	private float speed;
 	private float positionCenteredX, positionCenteredY;
 	private Shape collider;
-	
+	private Shape progress;
+
 	public Racket(float positionX, float positionY, int width, int height) {		
 		this.width = width;
 		this.height = height;
 		this.positionX = positionX; 
 		this.positionY = positionY - Main.OFFSET;
 		this.collider = new Rectangle2D.Double((int) this.positionX, (int) this.positionY, this.width, this.height);
+		this.progress = new Rectangle2D.Double(this.positionX, this.positionY, 0, this.height);
 	}
 	
+	public Shape getProgressShape() {
+		return this.progress;
+	}
 	
+	public void setProgressShape(Shape shape) {
+		this.progress = shape;
+	}
 	
 	public boolean leftBlock() {return ((positionX+speed) <= 0);}
 	
 	public float getRightEnd() {return (this.positionCenteredX + this.width);}
 	
+		
 	public void moveLeft() {
 		if (leftBlock()) {
 			speed = -10;
@@ -63,7 +72,7 @@ public class Racket extends Thread {
 	
 	public float getMaxSpeed() {return this.maxSpeed;}
 	
-	public Shape getShape() {return this.collider;}
+	public Shape getCollider() {return this.collider;}
 	
 	public void setSpeed(float speed) {this.speed = speed;}
 	
@@ -82,15 +91,16 @@ public class Racket extends Thread {
 	
 	
 	public void run() {
-		while(true) {
+		while(!Model.paused) {
 			
 			checkRestraint();
 			//if(this.positionCenteredX >= 400) {this.setPositionX(780);}
 			//System.out.println("Position x = "+this.positionX+" Position x - rw = "+(this.positionX-120));
-			this.positionX += this.speed; // Mettre dans une fonction uopdate? 		
+			this.positionX += this.speed; // Mettre dans une fonction uopdate? 
+			
 			try {
-				//System.out.println("Thread fonctinne");
-				Thread.sleep(16);
+				
+				Thread.sleep(10);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -100,8 +110,13 @@ public class Racket extends Thread {
 	
 	public void paintRacket(Graphics gRaw) {
 		Graphics2D g = (Graphics2D) gRaw;	
-		Shape rect =  new Rectangle2D.Double((int) this.positionX, (int) this.positionY, this.width, this.height);
-		g.draw(rect);
-		g.fill(rect);
+		this.collider =  new Rectangle2D.Double((int) this.positionX, (int) this.positionY, this.width, this.height);
+		//this.progress = new Rectangle2D.Double(this.positionX, this.positionY,  (( Model.score*10)/100) * this.width, this.height);
+		g.setColor(Color.BLACK);
+		g.draw(collider);
+		g.fill(collider);
+		g.setColor(Color.GREEN);
+		//g.draw(progress);
+		//g.fill(progress);
 	}
 }

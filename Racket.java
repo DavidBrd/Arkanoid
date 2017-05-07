@@ -39,6 +39,7 @@ public class Racket extends Thread {
 	
 	public float getRightEnd() {return (this.positionCenteredX + this.width);}
 	
+		
 	public void moveLeft() {
 		if (leftBlock()) {
 			speed = -10;
@@ -95,10 +96,11 @@ public class Racket extends Thread {
 			checkRestraint();
 			//if(this.positionCenteredX >= 400) {this.setPositionX(780);}
 			//System.out.println("Position x = "+this.positionX+" Position x - rw = "+(this.positionX-120));
-			this.positionX += this.speed; // Mettre dans une fonction uopdate? 		
+			this.positionX += this.speed; // Mettre dans une fonction uopdate? 
+			
 			try {
-				//System.out.println("Thread fonctinne");
-				Thread.sleep(16);
+				
+				Thread.sleep(10);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

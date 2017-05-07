@@ -20,10 +20,15 @@ public class View extends Thread{
 		this.model = model;
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(800, 600);
+		frame.setSize(800, 750);
 		frame.setResizable(false);
 		//frame.setLocationRelativeTo(null);
 		Container cp = frame.getContentPane();
+		
+		JPanel rightPanel = new JPanel();
+		rightPanel.setPreferredSize(new Dimension(800,150));
+		cp.add(rightPanel, BorderLayout.NORTH);
+		rightPanel.setBackground(Color.BLACK);
 		
 		DisplayView display = new DisplayView(this.model);
 		display.setSize( new Dimension(800, 600));
@@ -36,12 +41,14 @@ public class View extends Thread{
 	}
 	
 	public void run() {
-		while(!Model.gameOver) {			
-			this.frame.repaint();		
+		while(!Model.gameOver) {
+			synchronized (this) {
+				this.frame.setTitle("Arkakanoid FPS : "+Main.fpscounter.getFps());}
+			this.frame.repaint();	
+			Main.fpscounter.interrupt();
 			try {
 				Thread.sleep(10);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}		
 		}		
@@ -57,16 +64,19 @@ public class View extends Thread{
 		public DisplayView(Model model) {this.model = model;}
 			
 		public void paintComponent(Graphics g) {			
+			
+			
 			model.getRacket().paintRacket(g);
 			for (Ball ball : model.getBalls()) {
 				ball.paintBall(g);
 			}
 			
-			model.clearBricks();
+			
 			for (Brick brick : model.getBricks()) {
-				if(brick.isActive()) {
+				if(brick.getTapToDeath() > 0) {
 					brick.paintBrick(g);
 				}
 			}
+			//model.clearBricks();
 		}
 	}

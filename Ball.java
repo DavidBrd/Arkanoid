@@ -40,6 +40,10 @@ public class Ball extends Thread {
 		
 	}
 	
+	public void multiplySpeed(float amount) {
+		this.speedX *= amount;
+	}
+	
 	public double getSize() {return this.size;}
 	
 	public double getPositionX() {return this.positionX;}
@@ -53,25 +57,28 @@ public class Ball extends Thread {
 	}
 	
 	public String checkCollisionBrick(Brick brick) {		
-		double xLeftBrick = brick.getPositionX();
-		double xRightBrick = xLeftBrick + brick.getWidth();	
-		
-		if ( this.ballIntersectsBrick(brick) ) {
-			if ( xLeftBrick < this.positionX && this.positionX < xRightBrick ) {
-				if ( this.speedX > 0) {
-					return "top";
+		synchronized (brick) {
+			double xLeftBrick = brick.getPositionX();
+			double xRightBrick = xLeftBrick + brick.getWidth();	
+			
+			if ( brick.getTapToDeath() <= 0) {return "";}
+			if ( this.ballIntersectsBrick(brick) ) {
+				if ( xLeftBrick < this.positionX && this.positionX < xRightBrick ) {
+					if ( this.speedY > 0) {
+						return "top";
+					} else {
+						return "bottom";
+					}
 				} else {
-					return "bottom";
-				}
-			} else {
-				if ( this.speedX > 0 ) {
-					return "left";
-				} else {
-					return "right";
+					if ( this.speedX > 0 ) {
+						return "left";
+					} else {
+						return "right";
+					}
 				}
 			}
+			return "no collision";
 		}
-		return "no collision";
 	}	
 	
 	private boolean ballIntersectsRacket(Racket racket) {
@@ -109,6 +116,8 @@ public class Ball extends Thread {
 		if ( positionY < 0) {
 			speedY = Main.BALL_SPEED;
 		} else if ( (positionY + size) > Main.HEIGHT) {
+			//Model.gameOver = true;
+			//System.out.println("D");
 			//speedY = -Main.BALL_SPEED;
 			//positionX = 400; //Positon de réaparition de la balle
 			//positionY = 300;
@@ -117,18 +126,27 @@ public class Ball extends Thread {
 	}
 	
 	public void bounceBottom() {
-		this.speedY = -Main.BALL_SPEED;
+		this.speedY = Main.BALL_SPEED;
 	}
 	
 	//La balle repart dans la direction inverse lors de la collision coté gauche (eventuellement à changer)
-	public void bounceLeft() {
+	
+	public void bounceTopLeft() {
 		this.speedX = -Main.BALL_SPEED;
 		this.speedY = -Main.BALL_SPEED;
 	}
 	
+	public void bounceTopRight() {
+		this.speedX =  Main.BALL_SPEED;
+		this.speedY = -Main.BALL_SPEED;
+	}
+	
+	public void bounceLeft() {
+		this.speedX = -Main.BALL_SPEED;
+	}
+	
 	public void bounceRight() {
 		this.speedX = Main.BALL_SPEED;
-		this.speedY = Main.BALL_SPEED;
 	}
 	
 	public void bounceTop() {
@@ -136,14 +154,16 @@ public class Ball extends Thread {
 	}
 	
 	public void run() {
-		while(!Model.paused){
-			update();
-			try {
-				Thread.sleep(10);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			while(!Model.paused){
+				update();		
+				
+				try {					
+					Thread.sleep(10);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
-		}
+		
 	}
 }

@@ -12,6 +12,7 @@ public class Model {
 	public static boolean gameOver = false;
 	public static boolean paused = false;
 	public static int score = 0;
+	public static boolean updateAll = false;
 	private int ballNumber;
 	private View view;
 	
@@ -37,7 +38,7 @@ public class Model {
 	public ArrayList<Ball> getBalls() {return this.balls;}
 	public ArrayList<Brick> getBricks() {return this.bricks;}
 	
-	public void clearBricks() {
+	public synchronized void clearBricks() {
 		Iterator<Brick> bricksIt = bricks.iterator();
 		while (bricksIt.hasNext()) {
 			Brick brick = bricksIt.next();

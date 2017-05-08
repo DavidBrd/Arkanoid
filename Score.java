@@ -31,17 +31,19 @@ public class Score extends Thread{
 		g.setFont(new Font("Courrier", 0, 20));
 		g.drawString("Score "+score, 50, 50);		
 	}
-	
+/*
 	public void run() {
 		while(!Model.gameOver) {
-			paintScore(panel.getGraphics());
-			try {
-				Thread.sleep(10);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+				while(!Model.paused) {
+					paintScore(panel.getGraphics());
+					try {
+						Thread.sleep(10);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
 		}
-	}
+	}*/
 	
 }

@@ -77,7 +77,7 @@ public class Brick {
 			Font font = new Font("courrier", Font.BOLD, 28);
 			g.setFont(font);
 			g.setColor(Color.BLACK);
-			g.drawString("+10", (int)(this.positionX + this.width/2) - 20, (int)(this.positionY + this.height/2));
+			g.drawString("+"+(10*Main.SCORE_BONUS), (int)(this.positionX + this.width/2) - 20, (int)(this.positionY + this.height/2));
 			update();			
 		} else if (this.tapToDeath > 0) {
 			switch (this.tapToDeath) {

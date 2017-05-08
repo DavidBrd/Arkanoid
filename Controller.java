@@ -18,13 +18,11 @@ public class Controller implements KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		
-		
-		
+		/*	
 		if(e.getKeyChar() == 'p') {
 			Model.paused = !Model.paused;
 			System.out.println("PAUSED = "+Model.paused);
-		}
+		}*/
 		
 		if(e.getKeyChar() == 'd' && this.model.getRacket().getSpeed() <= this.model.getRacket().getMaxSpeed() ) {				
 				model.getRacket().moveRight();
@@ -39,12 +37,7 @@ public class Controller implements KeyListener {
 	
 	@Override
 	public void keyReleased(KeyEvent e) {
-				
-		if(e.getKeyChar() == 'g' && Model.gameOver) {
-			Model.gameOver = false;
-			System.out.println("Game started");
-		}
-		
+					
 		if(e.getKeyChar() == 'd' && (model.getRacket().getSpeed() != 0)) {
 			model.getRacket().setSpeed(0);			
 		}
@@ -64,6 +57,11 @@ public class Controller implements KeyListener {
 		
 		if(e.getKeyChar() == 'q' && this.model.getRacket().getSpeed() >= this.model.getRacket().getMaxSpeed()) {
 			model.getRacket().incrementSpeed(-acceleration);
+		}
+		
+		if(e.getKeyChar() == 'p') {
+			Model.paused = !Model.paused;
+			System.out.println("PAUSED = "+Model.paused);
 		}
 		
 	}

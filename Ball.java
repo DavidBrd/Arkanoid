@@ -138,7 +138,9 @@ public class Ball extends Thread {
 		if ( positionY < 0) {
 			speedY = Main.BALL_SPEED;
 		} else if ( (positionY + size) > Main.HEIGHT) {
-			active = false;
+			System.out.println("[Debug] BALL PERDUE" +Ball.nbBall);
+			Ball.nbBall--;
+			active = false;				
 			//Model.gameOver = true;
 			//System.out.println("Balle perdue");
 			//speedY = -Main.BALL_SPEED;
@@ -175,15 +177,10 @@ public class Ball extends Thread {
 	}
 	
 	public void run() {
-			while(!Model.paused){
-				//update();						
-				try {					
-					Thread.sleep(10);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+		while(!Model.gameOver) {
+			if (Ball.nbBall <= 0) {
+				Model.gameOver = true;
 			}
-		
+		}
 	}
 }

@@ -91,19 +91,16 @@ public class Racket extends Thread {
 	
 	
 	public void run() {
-		while(!Model.paused) {
-			
-			checkRestraint();
-			//if(this.positionCenteredX >= 400) {this.setPositionX(780);}
-			//System.out.println("Position x = "+this.positionX+" Position x - rw = "+(this.positionX-120));
-			this.positionX += this.speed; // Mettre dans une fonction uopdate? 
-			
-			try {
-				
-				Thread.sleep(10);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		while(!Model.gameOver) {
+			while(!Model.paused) {		
+				checkRestraint();
+				this.positionX += this.speed; // Mettre dans une fonction uopdate? 		
+				try {			
+					Thread.sleep(10);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
 	}

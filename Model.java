@@ -22,8 +22,13 @@ public class Model {
 		//this.balls.add(new Ball(420,580,Main.BALL_SPEED,-Main.BALL_SPEED));
 		//this.balls.add(new Ball(0,550,Main.BALL_SPEED,Main.BALL_SPEED));
 		//this.balls.add(new Ball(200,45,Main.BALL_SPEED,Main.BALL_SPEED));		
+		//initBricks_lvl0();
 		//initBricks_lvl1();
 		initBricks_lvl2();
+	}
+	
+	public void addBall(Ball ball) {
+		this.balls.add(ball);
 	}
 	
 	public Racket getRacket() {return this.racket;}
@@ -58,7 +63,7 @@ public class Model {
 	
 	public void initBricks_lvl1() {
 		int COUNT_BLOCKS_X = 11;
-		int COUNT_BLOCKS_Y = 4;
+		int COUNT_BLOCKS_Y = 10;
 		
 		for (int i = 0; i < COUNT_BLOCKS_X; ++i) {
 			for (int j = 0; j < COUNT_BLOCKS_Y; ++j) {
@@ -75,14 +80,27 @@ public class Model {
 	
 	public void initBricks_lvl2() {
 		int COUNT_BLOCKS_X = 11;
-		int COUNT_BLOCKS_Y = 4;
+		int COUNT_BLOCKS_Y = 5;
 		
 		for (int i = 0; i < COUNT_BLOCKS_X; ++i) {
 			for (int j = 0; j < COUNT_BLOCKS_Y; ++j) {
-				bricks.add( new Brick( (j+i + 1) * (Main.BRICK_WIDTH + 3) - 30,
+				bricks.add( new Brick( (j+i + 1) * (Main.BRICK_WIDTH + 3) - 50,
 						(j + 2) * (Main.BRICK_HEIGHT + 3) - 10, 3));
 			}
 			
 		}
 	}		
+	
+	public void initBricks_lvl0() {
+		int COUNT_BLOCKS_X = 11;
+		int COUNT_BLOCKS_Y = 4;
+		
+		for (int i = 0; i < COUNT_BLOCKS_X; ++i) {
+			for (int j = 0; j < COUNT_BLOCKS_Y; ++j) {
+				bricks.add( new Brick( (j+i + 1) * (Main.BRICK_WIDTH + 3) - 30,
+						(j + 2) * (Main.BRICK_HEIGHT + 3) - 10, 1));
+			}
+			
+		}
+	}	
 }

@@ -57,52 +57,54 @@ public class Collision extends Thread{
 						case "top":					
 							ball.bounceTop();							
 							brick.setTapToDeath(brick.getTapToDeath()-1);						
-							if (brick.getTapToDeath() <= 0) {Model.score+=10;}
+							if (brick.getTapToDeath() <= 0) {Model.score+=10*Main.SCORE_BONUS;}
 							break;
 						case "bottom":
 							ball.bounceBottom();
 							brick.setTapToDeath(brick.getTapToDeath()-1);
-							if (brick.getTapToDeath() <= 0) {Model.score+=10;}
+							if (brick.getTapToDeath() <= 0) {Model.score+=10*Main.SCORE_BONUS;}
 							break;
 						case "left":
 							ball.bounceLeft();
 							brick.setTapToDeath(brick.getTapToDeath()-1);
-							if (brick.getTapToDeath() <= 0) {Model.score+=10;}
+							if (brick.getTapToDeath() <= 0) {Model.score+=10*Main.SCORE_BONUS;}
 							break;
 						case "right":
 							ball.bounceRight();
 							brick.setTapToDeath(brick.getTapToDeath()-1);
-							if (brick.getTapToDeath() <= 0) {Model.score+=10;}
+							if (brick.getTapToDeath() <= 0) {Model.score+=10*Main.SCORE_BONUS;}
 							break;
 						case "no collision":
 							break;
 						default:
 							break;
 						}		
-					//}
-					
-				}
-			
+					//}				
+				}		
 			} 
 		}	
 	}
 	
+	
 	public void run() {
 		
 		while(!Model.gameOver){			
-			ballRacketCollisions();	
-			ballBrickCollisions();
-			for (Ball ball : model.getBalls()) {
-				ball.update();
-			}
-			try {				
-				Thread.sleep(10);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			while(!Model.paused) {
+				ballRacketCollisions();	
+				ballBrickCollisions();
+				for (Ball ball : model.getBalls()) {
+					if (ball.isActive()) {
+						ball.update();
+					}					
+				}	
+				try {				
+					Thread.sleep(10);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
-
 	}
 }
 

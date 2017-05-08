@@ -41,17 +41,14 @@ public class Main {
 		difficultyTimer.scheduleAtFixedRate(difficulty, 15_000, 15_000);
 		ballSpawnTimer.scheduleAtFixedRate(ballSpawn, 10_000, 10_000);
 		onFireTimer.scheduleAtFixedRate(onFire, 0, 10_000);
-		
-		
-		fpscounter = new FpsCounter();
-		
+			
+		fpscounter = new FpsCounter();	
 		fpscounter.start();		
-		
+			
 		view.start();
 		for (Ball ball : model.getBalls()) {
 			ball.start();
-		}	
-		
+		}		
 		model.getRacket().start();
 		collisionThread.start();		
 	}

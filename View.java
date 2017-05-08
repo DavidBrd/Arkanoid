@@ -19,6 +19,8 @@ public class View extends Thread{
 	private JLabel score;
 	private JLabel ballesRestantes;
 	private JLabel scoreBonus;
+	private HighScoreManager highScoreManager;
+	private JLabel highScore;
 		
 	public View(Model model, int width, int height) {
 		
@@ -44,14 +46,22 @@ public class View extends Thread{
 		scoreBonus.setFont(new Font("courrier", Font.BOLD, 40));
 		scoreBonus.setForeground(Color.RED);
 		
+		highScoreManager = new HighScoreManager();
+		highScoreManager.loadScoreFile();
+		
+		highScore = new JLabel (highScoreManager.getHighscoreString());
+		highScore.setFont(new Font("courrier", Font.BOLD, 20));
+		highScore.setForeground(Color.ORANGE);
+				
 		topPanel.setLayout(new FlowLayout());
 		topPanel.add(score);	
 		topPanel.add(scoreBonus);
 		topPanel.add(ballesRestantes);
+		topPanel.add(highScore);
 		topPanel.setPreferredSize(new Dimension(800,150));
 		cp.add(topPanel, BorderLayout.NORTH);
 		topPanel.setBackground(Color.GRAY);
-		
+				
 		DisplayView display = new DisplayView(this.model);
 		display.setSize( new Dimension(800, 600));
 		display.setBackground(Color.RED);
@@ -65,7 +75,9 @@ public class View extends Thread{
 			while(!Model.paused) {
 				synchronized (this) {
 					if (Ball.nbBall <= 0) {
-						model.gameOver = true;
+						highScoreManager.addScore(System.getProperty("user.name"), Model.score);
+						Model.gameOver = true;
+						System.exit(0);
 					}
 					this.frame.setTitle("Arkakanoid FPS : "+Main.fpscounter.getFps());
 					this.score.setText("Score : " + this.model.score);

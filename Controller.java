@@ -1,5 +1,7 @@
 package david_nour.arcanoid;
 
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 	
@@ -16,6 +18,8 @@ public class Controller implements KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
+		
+		
 		
 		if(e.getKeyChar() == 'p') {
 			Model.paused = !Model.paused;
@@ -35,8 +39,11 @@ public class Controller implements KeyListener {
 	
 	@Override
 	public void keyReleased(KeyEvent e) {
-		
-		
+				
+		if(e.getKeyChar() == 'g' && Model.gameOver) {
+			Model.gameOver = false;
+			System.out.println("Game started");
+		}
 		
 		if(e.getKeyChar() == 'd' && (model.getRacket().getSpeed() != 0)) {
 			model.getRacket().setSpeed(0);			

@@ -1,6 +1,7 @@
 package david_nour.arcanoid;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Shape;
@@ -18,8 +19,14 @@ public class Brick {
 	public Brick(double x, double y) {
 		positionX = x;
 		positionY = y;
+		this.collider = new Rectangle2D.Double((int) this.positionX, (int) this.positionY, this.width, this.height);	
+	}
+	
+	public Brick(double x, double y, int tapToDeath) {
+		positionX = x;
+		positionY = y;
 		this.collider = new Rectangle2D.Double((int) this.positionX, (int) this.positionY, this.width, this.height);
-		
+		this.tapToDeath = tapToDeath;
 	}
 	
 	public int getTapToDeath() {
@@ -61,12 +68,18 @@ public class Brick {
 	public void destroy() {
 		
 	}
-	
-	public synchronized void paintBrick(Graphics gRaw) {
+
+	public void paintBrick(Graphics gRaw) {
 		Graphics2D g = (Graphics2D) gRaw;
 		this.collider = new Rectangle2D.Double((int) this.positionX, (int) this.positionY, this.width, this.height);
 		
-		if (this.tapToDeath > 0) {
+		if (this.tapToDeath <= 0 && active && positionY < 150) {
+			Font font = new Font("courrier", Font.BOLD, 28);
+			g.setFont(font);
+			g.setColor(Color.BLACK);
+			g.drawString("+10", (int)(this.positionX + this.width/2) - 20, (int)(this.positionY + this.height/2));
+			update();			
+		} else if (this.tapToDeath > 0) {
 			switch (this.tapToDeath) {
 			case 1:
 				g.setColor(Color.GREEN);
@@ -80,10 +93,34 @@ public class Brick {
 			default:
 				break;
 			}
+		
+		
 			//System.out.println("Dessin Brick");
 			g.draw(collider);
 			g.fill(collider);		
 		}
+		
 			
+	}
+	
+	public synchronized void update() {
+		
+			positionY += 0.9f;
+			
+		
+	}
+	
+	public void run() {
+		while(!Model.gameOver && Model.gameOver) {			
+				while(tapToDeath <= 0 && active) {					
+					update();
+					//if (positionY <= 0) {active = false;}
+				} 
+				try {
+					Thread.sleep(33);
+				} catch (InterruptedException e) {				
+					e.printStackTrace();
+				}						
+		}
 	}
 }

@@ -61,11 +61,13 @@ public class Ball extends Thread {
 		
 			double xLeftBrick = brick.getPositionX();
 			double xRightBrick = xLeftBrick + brick.getWidth();	
+			double xBallCentered = this.positionX + size/2;
+			double yBallCentered = this.positionY + size/2;
 			
 			if ( brick.getTapToDeath() <= 0) {return "";}
 			
 			if ( this.ballIntersectsBrick(brick) ) {
-				if ( xLeftBrick <= this.positionX && this.positionX <= xRightBrick ) {
+				if ( xLeftBrick <= xBallCentered && xBallCentered <= xRightBrick ) {
 					if ( this.speedY > 0) {
 						System.out.println("[Debug] collision : top");
 						return "top";
@@ -73,15 +75,16 @@ public class Ball extends Thread {
 						System.out.println("[Debug] collision : bottom");
 						return "bottom";
 					}											
-				}
-				if ( this.positionX < xLeftBrick + 10) {
+				} else 
+					if ( xBallCentered < xLeftBrick + 5) {
 					System.out.println("[Debug] collision : left");
 					return "left";
-				}
-				if( this.positionX > xRightBrick -10) {
+				} else if(xBallCentered > xRightBrick){
 					System.out.println("[Debug] collision : right");
 					return "right";
 				}
+						
+				
 			}
 			
 			

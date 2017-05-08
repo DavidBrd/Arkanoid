@@ -74,6 +74,8 @@ public class Collision extends Thread{
 							brick.setTapToDeath(brick.getTapToDeath()-1);
 							if (brick.getTapToDeath() <= 0) {Model.score+=10;}
 							break;
+						case "no collision":
+							break;
 						default:
 							break;
 						}		

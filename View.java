@@ -17,8 +17,12 @@ public class View extends Thread{
 	private JFrame frame;
 	private Model model;
 	private JLabel score;
-	
-	
+	private JLabel ballesRestantes;
+	private JLabel scoreBonus;
+	private HighScoreManager highScoreManager;
+	private JLabel highScore;
+	private MainMenu mainMenu;
+		
 	public View(Model model, int width, int height) {
 		
 		this.frame = new JFrame("TeteContreBrique");
@@ -27,43 +31,120 @@ public class View extends Thread{
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(800, 750);
 		frame.setResizable(false);
-		//frame.setLocationRelativeTo(null);
 		Container cp = frame.getContentPane();
 		
-		JPanel rightPanel = new JPanel();
-		this.score = new JLabel("Score : 0");
-		score.setForeground(Color.blue);
-		score.setHorizontalAlignment(JLabel.CENTER);
+		JPanel topPanel = new JPanel();
+		this.score = new JLabel("Score : 0 ");
+		score.setFont(new Font("courrier", Font.BOLD, 40));
+		score.setForeground(Color.RED);
 		
-		rightPanel.setLayout(new BorderLayout());
-		rightPanel.add(score, BorderLayout.NORTH);
-		rightPanel.setPreferredSize(new Dimension(800,150));
-		cp.add(rightPanel, BorderLayout.NORTH);
-		rightPanel.setBackground(Color.BLACK);
 		
+		ballesRestantes = new JLabel(" Balles : " + Ball.nbBall);
+		ballesRestantes.setFont(new Font("courrier", Font.BOLD, 40));
+		ballesRestantes.setForeground(Color.RED);
+		
+		scoreBonus = new JLabel(" X"+Main.SCORE_BONUS);
+		scoreBonus.setFont(new Font("courrier", Font.BOLD, 40));
+		scoreBonus.setForeground(Color.RED);
+		
+		highScoreManager = new HighScoreManager();
+		highScoreManager.loadScoreFile();
+		
+		highScore = new JLabel (highScoreManager.getHighscoreString());
+		highScore.setFont(new Font("courrier", Font.BOLD, 20));
+		highScore.setForeground(Color.ORANGE);
+				
+		topPanel.setLayout(new FlowLayout());
+		topPanel.add(score);	
+		topPanel.add(scoreBonus);
+		topPanel.add(ballesRestantes);
+		topPanel.add(highScore);
+		topPanel.setPreferredSize(new Dimension(800,150));
+		cp.add(topPanel, BorderLayout.NORTH);
+		topPanel.setBackground(Color.GRAY);
+				
 		DisplayView display = new DisplayView(this.model);
 		display.setSize( new Dimension(800, 600));
-		//display.setLocation(0, 0);
 		display.setBackground(Color.RED);
 		cp.add(display);
 			
-		frame.setVisible(true);
+		frame.setVisible(true);	
+	}
+	
+	public View(Model model, int width, int height, int n) {
 		
+		this.frame = new JFrame("TeteContreBrique");
+		this.model = model;
+		
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setSize(800, 750);
+		frame.setResizable(false);
+		Container cp = frame.getContentPane();
+		
+		JPanel topPanel = new JPanel();
+		this.score = new JLabel("Score : 0 ");
+		score.setFont(new Font("courrier", Font.BOLD, 40));
+		score.setForeground(Color.RED);
+		
+		
+		
+		ballesRestantes = new JLabel(" Balles : " + Ball.nbBall);
+		ballesRestantes.setFont(new Font("courrier", Font.BOLD, 40));
+		ballesRestantes.setForeground(Color.RED);
+		
+		scoreBonus = new JLabel(" X"+Main.SCORE_BONUS);
+		scoreBonus.setFont(new Font("courrier", Font.BOLD, 40));
+		scoreBonus.setForeground(Color.RED);
+		
+		highScoreManager = new HighScoreManager();
+		highScoreManager.loadScoreFile();
+		
+		highScore = new JLabel (highScoreManager.getHighscoreString());
+		highScore.setFont(new Font("courrier", Font.BOLD, 20));
+		highScore.setForeground(Color.ORANGE);
+				
+		topPanel.setLayout(new FlowLayout());
+		topPanel.add(score);	
+		topPanel.add(scoreBonus);
+		topPanel.add(ballesRestantes);
+		topPanel.add(highScore);
+		topPanel.setPreferredSize(new Dimension(800,150));
+		cp.add(topPanel, BorderLayout.NORTH);
+		topPanel.setBackground(Color.GRAY);
+				
+		DisplayView display = new DisplayView(this.model);
+		display.setSize( new Dimension(800, 600));
+		display.setBackground(Color.RED);
+		cp.add(display);
+			
+		frame.setVisible(true);	
 	}
 	
 	public void run() {
 		while(!Model.gameOver) {
-			synchronized (this) {
-				this.frame.setTitle("Arkakanoid FPS : "+Main.fpscounter.getFps());
-				this.score.setText("Score : " + this.model.score);
-			}				
-			this.frame.repaint();	
-			Main.fpscounter.interrupt();
-			try {
-				Thread.sleep(10);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}		
+			while(!Model.paused) {
+				synchronized (this) {
+					if (Ball.nbBall <= 0) {
+						highScoreManager.addScore(System.getProperty("user.name"), Model.score);
+						Model.gameOver = true;
+						System.exit(0);
+					}
+					this.frame.setTitle("Arkakanoid FPS : "+Main.fpscounter.getFps());
+					this.score.setText("Score : " + this.model.score);
+					this.scoreBonus.setText(" X"+Main.SCORE_BONUS);
+					this.ballesRestantes.setText(" Balles : " + Ball.nbBall);				
+				}				
+				this.frame.repaint();	
+				Main.fpscounter.interrupt();
+				try {
+					Thread.sleep(10);
+					if(Model.paused2){
+						wait();
+					}
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}		
+			}
 		}		
 	}
 	
@@ -71,6 +152,7 @@ public class View extends Thread{
 
 }
 
+	@SuppressWarnings("serial")
 	class DisplayView extends JPanel {
 		private Model model;
 		
@@ -78,18 +160,22 @@ public class View extends Thread{
 			
 		public void paintComponent(Graphics g) {			
 			
-			
+			for (Brick brick : model.getBricks()) {
+				synchronized (brick) {
+					if(1==1/*brick.getTapToDeath() > 0*/) {
+						brick.paintBrick(g);
+					}
 			model.getRacket().paintRacket(g);
+			if( Model.gameMode == 2) {
+				model.getRacket2().paintRacket(g);
+			}
+				
 			for (Ball ball : model.getBalls()) {
 				ball.paintBall(g);
 			}
+						
 			
-			
-			for (Brick brick : model.getBricks()) {
-				if(brick.getTapToDeath() > 0) {
-					brick.paintBrick(g);
 				}
 			}
-			//model.clearBricks();
 		}
 	}

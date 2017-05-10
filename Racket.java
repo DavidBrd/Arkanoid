@@ -17,7 +17,18 @@ public class Racket extends Thread {
 	private float positionCenteredX, positionCenteredY;
 	private Shape collider;
 	private Shape progress;
-
+	private Color racketColor = Color.BLACK;
+	
+	public Racket(float positionX, float positionY, int width, int height, Color color) {		
+		this.width = width;
+		this.height = height;
+		this.positionX = positionX; 
+		this.positionY = positionY - Main.OFFSET;
+		this.collider = new Rectangle2D.Double((int) this.positionX, (int) this.positionY, this.width, this.height);
+		this.progress = new Rectangle2D.Double(this.positionX, this.positionY, 0, this.height);
+		this.racketColor = color;
+	}
+	
 	public Racket(float positionX, float positionY, int width, int height) {		
 		this.width = width;
 		this.height = height;
@@ -113,7 +124,7 @@ public class Racket extends Thread {
 		Graphics2D g = (Graphics2D) gRaw;	
 		this.collider =  new Rectangle2D.Double((int) this.positionX, (int) this.positionY, this.width, this.height);	
 		//this.progress = new Rectangle2D.Double(this.positionX, this.positionY,  (( Model.score*10)/100) * this.width, this.height);
-		g.setColor(Color.BLACK);
+		g.setColor(this.racketColor);
 		g.draw(collider);
 		g.fill(collider);
 		g.setColor(Color.GREEN);

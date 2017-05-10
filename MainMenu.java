@@ -19,8 +19,12 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
 public class MainMenu extends JFrame implements ActionListener, ItemListener{
-	private int selectedGameMode;
-	
+	private int selectedGameMode = 1;
+	private int selectedLevel = 1;
+	private JButton play;
+	private JRadioButton onePlayer;
+	private JRadioButton twoPlayer;
+	private JComboBox levelChoice;
 	
 	public MainMenu() {
 		super("Arkanoid");
@@ -29,20 +33,22 @@ public class MainMenu extends JFrame implements ActionListener, ItemListener{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		//setLayout(new FlowLayout());
 		
-		JButton play = new JButton("Jouer");
+		play = new JButton("Jouer");
 		play.addActionListener(this);
-		JRadioButton onePlayer = new JRadioButton("1 Joueur");
-		JRadioButton twoPlayer = new JRadioButton("2 Joueurs");
+		onePlayer = new JRadioButton("1 Joueur");
+		twoPlayer = new JRadioButton("2 Joueurs");
 		onePlayer.isSelected();
 		onePlayer.addItemListener(this);
 		twoPlayer.addItemListener(this);
 		ButtonGroup gameMode = new ButtonGroup();
 		gameMode.add(onePlayer);
 		gameMode.add(twoPlayer);
-		JComboBox levelChoice = new JComboBox();
+		levelChoice = new JComboBox();
 		levelChoice.addItem("Niveau 1");
 		levelChoice.addItem("Niveau 2");
 		levelChoice.addItem("Personalisé NYI");
+		levelChoice.setSelectedIndex(0);
+		levelChoice.addItemListener(this);
 		
 		JLabel logo = new JLabel();
 		ImageIcon icon = new ImageIcon("img/logo.png");
@@ -67,9 +73,8 @@ public class MainMenu extends JFrame implements ActionListener, ItemListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		//this.setVisible(false);
 		this.dispose();
-		Level lvl = new Level(1,2);
+		Level lvl = new Level(selectedLevel, selectedGameMode);
 		
 	}
 
@@ -77,8 +82,19 @@ public class MainMenu extends JFrame implements ActionListener, ItemListener{
 
 	@Override
 	public void itemStateChanged(ItemEvent e) {
-		// TODO Auto-generated method stub
 		
+		if(onePlayer.isSelected()) {
+			//System.out.println("One player mode selected");
+			selectedGameMode = 1;
+		}
+		
+		if(twoPlayer.isSelected()) {
+			//System.out.println("Two player mode selected");
+			selectedGameMode = 2;
+		}
+		
+		selectedLevel = levelChoice.getSelectedIndex() + 1;
+		//System.out.println("Niveau " +(levelChoice.getSelectedIndex() + 1) + " selectionné");
 	}
 	
 	

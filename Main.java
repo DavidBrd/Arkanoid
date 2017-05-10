@@ -24,8 +24,10 @@ public class Main {
 	
 	public static FpsCounter fpscounter;
 	
+	public static MainMenu mainMenu;
+	
 	public static void main(String[] args) {
-		/*	
+			
 		Model model = new Model();
 		View view = new View(model, WIDTH, HEIGHT);
 		Controller controller = new Controller(model, view);
@@ -46,14 +48,17 @@ public class Main {
 		fpscounter.start();		
 			
 		view.start();
+		/*
 		for (Ball ball : model.getBalls()) {
 			ball.start();
-		}		
+		}*/
+		
 		model.getRacket().start();
 		collisionThread.start();		
-		*/
-		//MainMenu mainMenu = new MainMenu();
-		Level lvl = new Level(1,2);
+		
+		//mainMenu = new MainMenu();
+		//Level lvl = new Level(1,1);
+		
 	}
 
 }

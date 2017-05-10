@@ -1,5 +1,6 @@
 package david_nour.arcanoid;
 
+import java.awt.Color;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -23,13 +24,28 @@ public class Model {
 		this.gameMode = gameMode;
 		if(gameMode == 1) {
 			this.racket = new Racket((Main.WIDTH/2) - (Main.RACKET_WIDTH/2), (Main.HEIGHT - Main.RACKET_HEIGHT), Main.RACKET_WIDTH, Main.RACKET_HEIGHT);
+			
 		}
 		
 		if(gameMode == 2) { 
-			this.racket = new Racket((Main.WIDTH/2) - (Main.RACKET_WIDTH/2), (Main.HEIGHT - Main.RACKET_HEIGHT), Main.RACKET_WIDTH/2, Main.RACKET_HEIGHT/2);
-			this.racket2 = new Racket((Main.WIDTH/2) - (Main.RACKET_WIDTH/2), (Main.HEIGHT - Main.RACKET_HEIGHT), Main.RACKET_WIDTH/2, Main.RACKET_HEIGHT/2);
+			this.racket = new Racket((Main.WIDTH/2) - (Main.RACKET_WIDTH/2), (Main.HEIGHT - Main.RACKET_HEIGHT), Main.RACKET_WIDTH/2, Main.RACKET_HEIGHT/2, Color.RED);
+			this.racket2 = new Racket((Main.WIDTH/2) - (Main.RACKET_WIDTH/2), (Main.HEIGHT - Main.RACKET_HEIGHT), Main.RACKET_WIDTH/2, Main.RACKET_HEIGHT/2, Color.BLUE);
 			
 		}
+		this.balls.add(new Ball(380,580,-Main.BALL_SPEED,-Main.BALL_SPEED));
+		//this.balls.add(new Ball(420,580,Main.BALL_SPEED,-Main.BALL_SPEED));
+		//this.balls.add(new Ball(0,550,Main.BALL_SPEED,Main.BALL_SPEED));
+		//this.balls.add(new Ball(200,45,Main.BALL_SPEED,Main.BALL_SPEED));		
+		//initBricks_lvl0();
+		//initBricks_lvl1();
+		initBricks_lvl2();
+	}
+	
+	public Model() {
+		this.gameMode = gameMode;
+		this.racket = new Racket((Main.WIDTH/2) - (Main.RACKET_WIDTH/2), (Main.HEIGHT - Main.RACKET_HEIGHT), Main.RACKET_WIDTH, Main.RACKET_HEIGHT);
+			
+		
 		this.balls.add(new Ball(380,580,-Main.BALL_SPEED,-Main.BALL_SPEED));
 		//this.balls.add(new Ball(420,580,Main.BALL_SPEED,-Main.BALL_SPEED));
 		//this.balls.add(new Ball(0,550,Main.BALL_SPEED,Main.BALL_SPEED));

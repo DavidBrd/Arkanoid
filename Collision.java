@@ -44,55 +44,59 @@ public class Collision extends Thread{
 	
 	
 	
-	private synchronized void ballBrickCollisions()  {
+	private void ballBrickCollisions()  {
+		synchronized (this.model.getBalls()) {
+			for (Ball ball : this.model.getBalls()) {
+				for (Brick brick : this.model.getBricks()) {
+					synchronized (brick) {									
+						if(brick.getTapToDeath() > 0) {
+						
+							String resCollision = ball.checkCollisionBrick(brick);
+						
+							switch (resCollision) {
+							case "top":					
+								ball.bounceTop();							
+								brick.setTapToDeath(brick.getTapToDeath()-1);						
+								if (brick.getTapToDeath() <= 0) {Model.score+=10*Main.SCORE_BONUS;}
+								break;
+							case "bottom":
+								ball.bounceBottom();
+								brick.setTapToDeath(brick.getTapToDeath()-1);
+								if (brick.getTapToDeath() <= 0) {Model.score+=10*Main.SCORE_BONUS;}
+								break;
+							case "left":
+								ball.bounceLeft();
+								brick.setTapToDeath(brick.getTapToDeath()-1);
+								if (brick.getTapToDeath() <= 0) {Model.score+=10*Main.SCORE_BONUS;}
+								break;
+							case "right":
+								ball.bounceRight();
+								brick.setTapToDeath(brick.getTapToDeath()-1);
+								if (brick.getTapToDeath() <= 0) {Model.score+=10*Main.SCORE_BONUS;}
+								break;
+							case "no collision":
+								break;
+							default:
+								break;
+							}		
+						}				
+					}		
+				} 
+			}	
+		}
 		
-		for (Ball ball : this.model.getBalls()) {
-			for (Brick brick : this.model.getBricks()) {
-				//synchronized (brick) {									
-					if(brick.getTapToDeath() > 0) {
-					
-						String resCollision = ball.checkCollisionBrick(brick);
-					
-						switch (resCollision) {
-						case "top":					
-							ball.bounceTop();							
-							brick.setTapToDeath(brick.getTapToDeath()-1);						
-							if (brick.getTapToDeath() <= 0) {Model.score+=10*Main.SCORE_BONUS;}
-							break;
-						case "bottom":
-							ball.bounceBottom();
-							brick.setTapToDeath(brick.getTapToDeath()-1);
-							if (brick.getTapToDeath() <= 0) {Model.score+=10*Main.SCORE_BONUS;}
-							break;
-						case "left":
-							ball.bounceLeft();
-							brick.setTapToDeath(brick.getTapToDeath()-1);
-							if (brick.getTapToDeath() <= 0) {Model.score+=10*Main.SCORE_BONUS;}
-							break;
-						case "right":
-							ball.bounceRight();
-							brick.setTapToDeath(brick.getTapToDeath()-1);
-							if (brick.getTapToDeath() <= 0) {Model.score+=10*Main.SCORE_BONUS;}
-							break;
-						case "no collision":
-							break;
-						default:
-							break;
-						}		
-					//}				
-				}		
-			} 
-		}	
 	}
-	
-	
+		
 	public void run() {
 		
 		while(!Model.gameOver){			
 			
 			while(!Model.paused) {
+				
 				ballRacketCollisions(model.getRacket());	
-				ballRacketCollisions(model.getRacket2());
+				if(Model.gameMode == 2) {
+					ballRacketCollisions(model.getRacket2());
+				}			
 				ballBrickCollisions();
 				for (Ball ball : model.getBalls()) {
 					if (ball.isActive()) {

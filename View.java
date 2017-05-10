@@ -158,7 +158,7 @@ public class View extends Thread{
 		
 		public DisplayView(Model model) {this.model = model;}
 			
-		public void paintComponent(Graphics g) {			
+		public synchronized void paintComponent(Graphics g) {			
 			
 			for (Brick brick : model.getBricks()) {
 				synchronized (brick) {

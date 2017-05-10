@@ -12,34 +12,37 @@ public class Collision extends Thread{
 	}
 	
 	private void ballRacketCollisions(Racket racket){
-		synchronized (this.model.getRacket()) {
-			for (Ball ball : this.model.getBalls()) {		
-				String resCollision = ball.checkSideCollision(racket); 
-				
-				switch (resCollision) {
-				case "topRight":					
-					ball.bounceTopRight();
-					if (racket.getSpeed()!=0) {
-						ball.multiplySpeed(1.2f);
-					}	
-					break;
-				case "topLeft":
-					ball.bounceTopLeft();
-					if (racket.getSpeed()!=0) {
-						ball.multiplySpeed(1.2f);
-					}	
-					break;
-				case "top":
-					ball.bounceTop();
-					if (racket.getSpeed()!=0) {
-						ball.multiplySpeed(1.2f);
-					}	
-					break;
-				default:
-					break;
+		synchronized (this.model.getBalls()) {
+			synchronized (racket) {
+				for (Ball ball : this.model.getBalls()) {		
+					String resCollision = ball.checkSideCollision(racket); 
+					
+					switch (resCollision) {
+					case "topRight":					
+						ball.bounceTopRight();
+						if (racket.getSpeed()!=0) {
+							ball.multiplySpeed(1.2f);
+						}	
+						break;
+					case "topLeft":
+						ball.bounceTopLeft();
+						if (racket.getSpeed()!=0) {
+							ball.multiplySpeed(1.2f);
+						}	
+						break;
+					case "top":
+						ball.bounceTop();
+						if (racket.getSpeed()!=0) {
+							ball.multiplySpeed(1.2f);
+						}	
+						break;
+					default:
+						break;
+					}
 				}
 			}
-		}
+			}
+			
 	}
 	
 	

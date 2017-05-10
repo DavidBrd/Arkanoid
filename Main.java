@@ -27,7 +27,7 @@ public class Main {
 	public static MainMenu mainMenu;
 	
 	public static void main(String[] args) {
-			
+		/*
 		Model model = new Model();
 		View view = new View(model, WIDTH, HEIGHT);
 		Controller controller = new Controller(model, view);
@@ -53,10 +53,10 @@ public class Main {
 			ball.start();
 		}*/
 		
-		model.getRacket().start();
-		collisionThread.start();		
+		//model.getRacket().start();
+		//collisionThread.start();		
 		
-		//mainMenu = new MainMenu();
+		mainMenu = new MainMenu();
 		//Level lvl = new Level(1,1);
 		
 	}

@@ -73,7 +73,7 @@ public class MainMenu extends JFrame implements ActionListener, ItemListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		this.dispose();
+		this.setVisible(false);
 		Level lvl = new Level(selectedLevel, selectedGameMode);
 		
 	}

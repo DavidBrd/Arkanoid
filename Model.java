@@ -38,7 +38,7 @@ public class Model {
 		//this.balls.add(new Ball(200,45,Main.BALL_SPEED,Main.BALL_SPEED));		
 		//initBricks_lvl0();
 		//initBricks_lvl1();
-		initBricks_lvl2();
+		//initBricks_lvl2();
 	}
 	
 	public Model() {
@@ -52,7 +52,7 @@ public class Model {
 		//this.balls.add(new Ball(200,45,Main.BALL_SPEED,Main.BALL_SPEED));		
 		//initBricks_lvl0();
 		//initBricks_lvl1();
-		initBricks_lvl2();
+		initBricks();
 	}
 	
 	public void addBall(Ball ball) {
@@ -70,6 +70,10 @@ public class Model {
 	
 	@SuppressWarnings("static-access")
 	public void setBallNumber(int number) {this.ballNumber = number;}
+	
+	public void setBricks(ArrayList<Brick> bricks) {
+		this.bricks = bricks;
+	}
 	
 	public void clearBricks() {
 		Iterator<Brick> bricksIt = bricks.iterator();
@@ -91,7 +95,7 @@ public class Model {
 		}
 	}
 	
-	public void initBricks_lvl1() {
+	public void initBricks() {
 		int COUNT_BLOCKS_X = 11;
 		int COUNT_BLOCKS_Y = 10;
 		

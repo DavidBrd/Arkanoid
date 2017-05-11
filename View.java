@@ -44,7 +44,7 @@ public class View extends Thread{
 		score.setForeground(Color.RED);
 		
 		
-		ballesRestantes = new JLabel(" Balles : " + Ball.nbBall);
+		ballesRestantes = new JLabel(" Balles : " + model.getBallNumber());
 		ballesRestantes.setFont(new Font("courrier", Font.BOLD, 40));
 		ballesRestantes.setForeground(Color.RED);
 		
@@ -129,25 +129,32 @@ public class View extends Thread{
 		while(!Model.gameOver) {
 			if(!Model.paused) {
 				synchronized (this) {
-					if (Ball.nbBall <= 0) {
-						highScoreManager.addScore(System.getProperty("user.name"), Model.score);
+					if(this.model.getNbBricks() <= 0) {
+						
 						Model.gameOver = true;
+						this.display.add(gg);						
+						System.out.println("on deeevrait etre là" + this.model.getBallNumber());
+					}
+					else if (this.model.getBallNumber() <= 0) {
+						highScoreManager.addScore(System.getProperty("user.name"), this.model.getScore());
+						Model.gameOver = true;
+						//this.model.setScore(0);
+						System.out.println("Score fin : " + this.model.getScore());
 						this.display.add(lose);
+						System.out.println("on devrait pas être là");
 						//System.exit(0);
 						//frame.dispose();
 						//Main.mainMenu.setVisible(true);
 					}
-					if(Model.nbBricks <= 0) {
-						Model.gameOver = true;
-						this.display.add(gg);
-						//frame.dispose();
-					}
+					
 					this.frame.setTitle("Arkakanoid FPS : "+Main.fpscounter.getFps());
-					this.score.setText("Score : " + this.model.score);
+					this.score.setText("Score : " + this.model.getScore());
 					this.scoreBonus.setText(" X"+Main.SCORE_BONUS);
-					this.ballesRestantes.setText(" Balles : " + Ball.nbBall);				
+					this.ballesRestantes.setText(" Balles : " + model.getBallNumber());				
 				}				
 				this.frame.repaint();	
+				System.out.println("Briques  : " + this.model.getNbBricks());
+				System.out.println(this.model.getBallNumber());
 				Main.fpscounter.interrupt();
 				try {
 					Thread.sleep(10);

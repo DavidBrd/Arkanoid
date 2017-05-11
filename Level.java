@@ -7,6 +7,8 @@ import java.util.TimerTask;
 public class Level {
 	private int id;
 	private int gameMode;
+	private Model model;
+	private int nbBricksCustom;
 	
 	public Level(int id, int gameMode) {
 		this.id = id;
@@ -14,7 +16,9 @@ public class Level {
 		loadLvl(this.id, this.gameMode);
 	}
 	
-	public Level(int gameMode, ArrayList<Brick> tab) {
+	public Level(int gameMode, ArrayList<Brick> tab, int nbBricksCustom) {
+		//this.model.setBallNumber(nbBricksCustom);
+		this.nbBricksCustom = nbBricksCustom;
 		this.gameMode = gameMode;
 		lvlCustom(this.gameMode, tab);
 	}
@@ -38,18 +42,18 @@ public class Level {
 		
 		for (int i = 0; i < COUNT_BLOCKS_X; ++i) {
 			for (int j = 0; j < COUNT_BLOCKS_Y; ++j) {
+				this.model.incrNbBricks();
 				bricks.add( new Brick( (j+i + 1) * (Main.BRICK_WIDTH + 3) - 50,
-						(j + 2) * (Main.BRICK_HEIGHT + 3) - 10, 3));
-				Model.nbBricks ++;
-				System.out.println(Model.nbBricks);
+						(j + 2) * (Main.BRICK_HEIGHT + 3) - 10, 1));
 			}
 			
 		}
+		System.out.println("wesh");
 	}	
 	
 	private void lvl1(int gameMode) {
 				
-		Model model = new Model(gameMode);
+		this.model = new Model(gameMode);
 		initBricksLvl1(model.getBricks());
 		View view = new View(model, Main.WIDTH, Main.HEIGHT);
 		Controller controller = new Controller(model, view);
@@ -59,12 +63,12 @@ public class Level {
 		Collision collisionThread = new Collision(model);
 		
 		TimerTask ballSpawn = new BallSpawn(model);
-		TimerTask onFire = new OnFire();
+		TimerTask onFire = new OnFire(model);
 		TimerTask difficulty = new Difficulty();
 		
-		Timer onFireTimer = new Timer(true);
-		Timer ballSpawnTimer = new Timer(true);
-		Timer difficultyTimer = new Timer(true);
+		Timer onFireTimer = new Timer();
+		Timer ballSpawnTimer = new Timer();
+		Timer difficultyTimer = new Timer();
 		
 		Main.fpscounter = new FpsCounter();
 		
@@ -88,7 +92,8 @@ public class Level {
 	
 	private void lvlCustom(int gameMode, ArrayList<Brick> tab) {
 		
-		Model model = new Model(gameMode);
+		this.model = new Model(gameMode);
+		this.model.setBricksNumber(this.nbBricksCustom);
 		model.setBricks(tab);
 		View view = new View(model, Main.WIDTH, Main.HEIGHT);
 		Controller controller = new Controller(model, view);
@@ -98,7 +103,7 @@ public class Level {
 		Collision collisionThread = new Collision(model);
 		
 		TimerTask ballSpawn = new BallSpawn(model);
-		TimerTask onFire = new OnFire();
+		TimerTask onFire = new OnFire(model);
 		TimerTask difficulty = new Difficulty();
 		
 		Timer onFireTimer = new Timer(true);

@@ -14,15 +14,12 @@ public class Ball {
 	private boolean active;
 	private Shape collider;
 	
-	public static int nbBall = 0;
-	
 	public Ball(int positionX, int positionY, double speedX, double speedY) {
 		this.positionX = positionX;
 		this.positionY = positionY;
 		this.speedX = speedX;
 		this.speedY = speedY;
 		active = true;
-		nbBall++;
 		this.collider = new Ellipse2D.Double(this.positionX, this.positionY, Main.BALL_RADIUS, Main.BALL_RADIUS);
 	}
 	
@@ -127,7 +124,7 @@ public class Ball {
 	}
 		
 	
-	public synchronized void update() {
+	public synchronized void update(Model model) {
 		positionX += speedX;
 		positionY += speedY;
 	
@@ -138,8 +135,8 @@ public class Ball {
 		if ( positionY < 0) {
 			speedY = Main.BALL_SPEED;
 		} else if ( (positionY + size) > Main.HEIGHT) {
-			System.out.println("[Debug] BALL PERDUE" +Ball.nbBall);
-			Ball.nbBall--;
+			System.out.println("[Debug] BALL PERDUE" + model.getBallNumber());
+			model.decrBallNumber();
 			active = false;				
 			//Model.gameOver = true;
 			//System.out.println("Balle perdue");

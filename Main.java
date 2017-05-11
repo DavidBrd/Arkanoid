@@ -57,7 +57,6 @@ public class Main {
 		//collisionThread.start();		
 		
 		mainMenu = new MainMenu();
-		System.out.println(Model.nbBricks);
 		//Level lvl = new Level(1,1);
 		//CustomLevel c = new CustomLevel();
 		

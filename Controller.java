@@ -59,6 +59,11 @@ public class Controller implements KeyListener {
 	
 	@Override
 	public void keyTyped(KeyEvent e) {
+		if(e.getKeyChar() == 'r' && Model.gameOver) {
+			this.view.getFrame().dispose();
+			MainMenu newMenu = new MainMenu();
+			//Main.mainMenu.setVisible(true);
+		}
 	}
 	
 	

@@ -114,18 +114,4 @@ public class Brick {
 			
 		
 	}
-	
-//	public void run() {
-//		while(!Model.gameOver && Model.gameOver) {			
-//				while(tapToDeath <= 0 && active) {					
-//					update();
-//					//if (positionY <= 0) {active = false;}
-//				} 
-//				try {
-//					Thread.sleep(33);
-//				} catch (InterruptedException e) {				
-//					e.printStackTrace();
-//				}						
-//		}
-//	}
 }

@@ -13,9 +13,14 @@ public class BallSpawn extends TimerTask{
 	public void run() {
 		if(!Model.gameOver) {
 			if(!Model.paused) {
-				if (model.getBallNumber() <= 30) {
+				if(model.getBallNumber() <= 30) {
 					model.addBall(new Ball(400, 300, Main.BALL_SPEED, -Main.BALL_SPEED));
 					//model.incrBallNumber();
+				}
+				if(model.getBallNumber() > 2) {
+					Ball newEnemyBall = new Ball(400, 300, Main.BALL_SPEED, -Main.BALL_SPEED);
+					newEnemyBall.setEnemy(true);
+					model.addBall(newEnemyBall);				
 				}
 				if (model.getBallNumber() == 30) {
 					this.cancel();

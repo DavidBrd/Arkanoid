@@ -98,8 +98,7 @@ public class Brick {
 			default:
 				break;
 			}
-		
-		
+				
 			//System.out.println("Dessin Brick");
 			g.draw(collider);
 			g.fill(collider);		
@@ -108,10 +107,7 @@ public class Brick {
 			
 	}
 	
-	public synchronized void update() {
-		
-			positionY += 0.9f;
-			
-		
+	public synchronized void update() {		
+			positionY += 0.9f;				
 	}
 }

@@ -20,18 +20,27 @@ public class Collision extends Thread{
 					switch (resCollision) {
 					case "topRight":					
 						ball.bounceTopRight();
+						if(ball.isEnemy() && ball.isActive()) {
+							racket.remove();
+						}
 						if (racket.getSpeed()!=0) {
 							ball.multiplySpeed(1.2f);
 						}	
 						break;
 					case "topLeft":
 						ball.bounceTopLeft();
+						if(ball.isEnemy() && ball.isActive()) {
+							racket.remove();
+						}
 						if (racket.getSpeed()!=0) {
 							ball.multiplySpeed(1.2f);
 						}	
 						break;
 					case "top":
 						ball.bounceTop();
+						if(ball.isEnemy() && ball.isActive()) {
+							racket.remove();
+						}
 						if (racket.getSpeed()!=0) {
 							ball.multiplySpeed(1.2f);
 						}	
@@ -39,6 +48,7 @@ public class Collision extends Thread{
 					default:
 						break;
 					}
+					
 				}
 			}
 			}

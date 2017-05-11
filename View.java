@@ -185,9 +185,15 @@ public class View extends Thread{
 					if(1==1/*brick.getTapToDeath() > 0*/) {
 						brick.paintBrick(g);
 					}
-			model.getRacket().paintRacket(g);
-			if( Model.gameMode == 2) {
-				model.getRacket2().paintRacket(g);
+			
+			if(model.getRacket().isActive()) {
+				model.getRacket().paintRacket(g);
+			}		
+			
+			if(Model.gameMode == 2) {
+				if(model.getRacket2().isActive()) {
+					model.getRacket2().paintRacket(g);
+				}
 			}
 				
 			for (Ball ball : model.getBalls()) {

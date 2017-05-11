@@ -13,6 +13,7 @@ public class Ball {
 	private double size = Main.BALL_RADIUS;
 	private boolean active;
 	private Shape collider;
+	private boolean enemy;
 	
 	public Ball(int positionX, int positionY, double speedX, double speedY) {
 		this.positionX = positionX;
@@ -20,12 +21,25 @@ public class Ball {
 		this.speedX = speedX;
 		this.speedY = speedY;
 		active = true;
+		enemy = false;
 		this.collider = new Ellipse2D.Double(this.positionX, this.positionY, Main.BALL_RADIUS, Main.BALL_RADIUS);
+	}
+	
+	public boolean isEnemy() {
+		return enemy;
+	}
+	
+	public void setEnemy(boolean bool) {
+		enemy = bool;
 	}
 	
 	public void paintBall(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
-		g2.setColor(Color.GRAY);
+		if(this.enemy) {
+			g2.setColor(Color.RED);
+		} else {
+			g2.setColor(Color.GRAY);
+		}
 		this.collider = new Ellipse2D.Double(this.positionX, this.positionY, Main.BALL_RADIUS, Main.BALL_RADIUS);
 		if(active) {
 			g2.draw(collider);
@@ -66,18 +80,18 @@ public class Ball {
 			if ( this.ballIntersectsBrick(brick) ) {
 				if ( xLeftBrick <= xBallCentered && xBallCentered <= xRightBrick ) {
 					if ( this.speedY > 0) {
-						System.out.println("[Debug] collision : top");
+						//System.out.println("[Debug] collision : top");
 						return "top";
 					} else {
-						System.out.println("[Debug] collision : bottom");
+						//System.out.println("[Debug] collision : bottom");
 						return "bottom";
 					}											
 				} else 
 					if ( xBallCentered < xLeftBrick + 5) {
-					System.out.println("[Debug] collision : left");
+					//System.out.println("[Debug] collision : left");
 					return "left";
 				} else if(xBallCentered > xRightBrick){
-					System.out.println("[Debug] collision : right");
+					//System.out.println("[Debug] collision : right");
 					return "right";
 				}
 						
@@ -109,12 +123,16 @@ public class Ball {
 	}
 	
 	public String checkSideCollision(Racket racket) {					
-		synchronized (racket) {
-			if( this.ballIntersectsRacket(racket) ) {				
-				if ( (this.getPositionX() + this.getSize()/2) <= (racket.getPositionX() + 20/Model.gameMode) && ( this.speedX >= 0 ) ) {				
+		synchronized (racket) {			
+			if(this.ballIntersectsRacket(racket) ) {				
+				
+				if(!racket.isActive()) {
+					return "no collision";
+				}
+				if (racket.isActive() && (this.getPositionX() + this.getSize()/2) <= (racket.getPositionX() + 20/Model.gameMode) && ( this.speedX >= 0 ) ) {				
 					return "topLeft";	
 				}				
-				if ( (this.getPositionX() + this.getSize()/2) > ( (racket.getPositionX()+racket.getWidth()) - 20/Model.gameMode ) && ( this.speedX < 0 ) )  {
+				if (racket.isActive() && (this.getPositionX() + this.getSize()/2) > ( (racket.getPositionX()+racket.getWidth()) - 20/Model.gameMode ) && ( this.speedX < 0 ) )  {
 					return "topRight";
 				} 				
 				return "top";
@@ -135,7 +153,7 @@ public class Ball {
 		if ( positionY < 0) {
 			speedY = Main.BALL_SPEED;
 		} else if ( (positionY + size) > Main.HEIGHT) {
-			System.out.println("[Debug] BALL PERDUE" + model.getBallNumber());
+			//System.out.println("[Debug] BALL PERDUE" + model.getBallNumber());
 			model.decrBallNumber();
 			active = false;				
 			//Model.gameOver = true;

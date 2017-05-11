@@ -14,6 +14,7 @@ public class Brick {
 	private boolean active = true;
 	private int tapToDeath = 1;
 	private Shape collider;
+	private int bonusType; //cf constantes de la classe Bonus, -1 si pas de bonus
 
 	
 	public Brick(double x, double y) {
@@ -27,6 +28,15 @@ public class Brick {
 		positionY = y;
 		this.collider = new Rectangle2D.Double((int) this.positionX, (int) this.positionY, this.width, this.height);
 		this.tapToDeath = tapToDeath;
+		this.bonusType = -1;
+	}
+	
+	public Brick(double x, double y, int tapToDeath, int bonusType) {
+		positionX = x;
+		positionY = y;
+		this.collider = new Rectangle2D.Double((int) this.positionX, (int) this.positionY, this.width, this.height);
+		this.tapToDeath = tapToDeath;
+		this.bonusType = bonusType;
 	}
 	
 	public int getTapToDeath() {
@@ -35,6 +45,14 @@ public class Brick {
 
 	public void setTapToDeath(int tapToDeath) {
 		this.tapToDeath = tapToDeath ;
+	}
+	
+	public int getBonusType() {
+		return this.bonusType;
+	}
+	
+	public void setBonusType(int bonusType) {
+		this.bonusType = bonusType;
 	}
 	
 	public boolean isActive() {
@@ -98,8 +116,7 @@ public class Brick {
 			default:
 				break;
 			}
-		
-		
+				
 			//System.out.println("Dessin Brick");
 			g.draw(collider);
 			g.fill(collider);		
@@ -108,10 +125,7 @@ public class Brick {
 			
 	}
 	
-	public synchronized void update() {
-		
-			positionY += 0.9f;
-			
-		
+	public synchronized void update() {		
+			positionY += 0.9f;				
 	}
 }

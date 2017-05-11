@@ -18,7 +18,7 @@ public class Main {
 	public static final double BRICK_WIDTH = 50;
 	
 	public static final double MAX_GAME_DIFFICULTY = 5;
-	public static double DIFFICULTY_RATE = 1.05f;
+	public static double DIFFICULTY_RATE = 1.10f;
 	
 	public static int SCORE_BONUS = 1;
 	

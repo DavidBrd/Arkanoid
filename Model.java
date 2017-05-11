@@ -1,16 +1,17 @@
 package david_nour.arcanoid;
 
 import java.awt.Color;
-import java.awt.Rectangle;
+import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 public class Model {
 	private ArrayList<Brick> bricks = new ArrayList<>();
 	private ArrayList<Ball> balls = new ArrayList<>();
+	private ArrayList<Bonus> bonus = new ArrayList<>();
 	private Racket racket;
 	private Racket racket2;
+	
 	
 	public static int gameMode;
 	public static boolean gameOver = false;
@@ -37,13 +38,29 @@ public class Model {
 			this.racket2 = new Racket((Main.WIDTH/2) - (Main.RACKET_WIDTH/2), (Main.HEIGHT - Main.RACKET_HEIGHT), Main.RACKET_WIDTH/2, Main.RACKET_HEIGHT/2, Color.BLUE);
 			
 		}
-		this.addBall(new Ball(380,580,-Main.BALL_SPEED,-Main.BALL_SPEED));
-		//this.balls.add(new Ball(420,580,Main.BALL_SPEED,-Main.BALL_SPEED));
-		//this.balls.add(new Ball(0,550,Main.BALL_SPEED,Main.BALL_SPEED));
-		//this.balls.add(new Ball(200,45,Main.BALL_SPEED,Main.BALL_SPEED));		
-		//initBricks_lvl0();
-		//initBricks_lvl1();
-		//initBricks_lvl2();
+		this.addBall(new Ball(380,580,-Main.BALL_SPEED,-Main.BALL_SPEED));		
+	}
+	
+	public void addBonus(Bonus bonus) {
+		this.bonus.add(bonus);
+	}
+	
+	public ArrayList<Bonus> getBonus() {
+		return this.bonus;
+	}
+	public void paintBonus(Graphics g) {
+		for (Bonus bonus : this.bonus) {
+			bonus.paintBonus(g);
+		}
+	}
+	
+	public void updateBonus() {
+		for (Bonus bonus : this.bonus) {
+			if(bonus.isActive()) {
+				//System.out.println("Bonus update");
+				bonus.update();
+			}
+		}
 	}
 	
 	public Model() {

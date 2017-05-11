@@ -133,15 +133,15 @@ public class View extends Thread{
 						
 						Model.gameOver = true;
 						this.display.add(gg);						
-						System.out.println("on deeevrait etre là" + this.model.getBallNumber());
+						//System.out.println("on deeevrait etre là" + this.model.getBallNumber());
 					}
 					else if (this.model.getBallNumber() <= 0) {
 						highScoreManager.addScore(System.getProperty("user.name"), this.model.getScore());
 						Model.gameOver = true;
 						//this.model.setScore(0);
-						System.out.println("Score fin : " + this.model.getScore());
+						//System.out.println("Score fin : " + this.model.getScore());
 						this.display.add(lose);
-						System.out.println("on devrait pas être là");
+						//System.out.println("on devrait pas être là");
 						//System.exit(0);
 						//frame.dispose();
 						//Main.mainMenu.setVisible(true);
@@ -153,8 +153,9 @@ public class View extends Thread{
 					this.ballesRestantes.setText(" Balles : " + model.getBallNumber());				
 				}				
 				this.frame.repaint();	
-				System.out.println("Briques  : " + this.model.getNbBricks());
-				System.out.println(this.model.getBallNumber());
+				//System.out.println("Briques  : " + this.model.getNbBricks());
+				//System.out.println(this.model.getBallNumber());
+				
 				Main.fpscounter.interrupt();
 				try {
 					Thread.sleep(10);
@@ -185,14 +186,22 @@ public class View extends Thread{
 					if(1==1/*brick.getTapToDeath() > 0*/) {
 						brick.paintBrick(g);
 					}
-			model.getRacket().paintRacket(g);
-			if( Model.gameMode == 2) {
-				model.getRacket2().paintRacket(g);
+			
+			if(model.getRacket().isActive()) {
+				model.getRacket().paintRacket(g);
+			}		
+			
+			if(Model.gameMode == 2) {
+				if(model.getRacket2().isActive()) {
+					model.getRacket2().paintRacket(g);
+				}
 			}
 				
 			for (Ball ball : model.getBalls()) {
 				ball.paintBall(g);
 			}
+			
+			model.paintBonus(g);
 						
 			
 				}

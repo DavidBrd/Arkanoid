@@ -5,8 +5,8 @@ import java.awt.event.KeyListener;
 
 public class State extends Thread {
 	
-	public void run() {					
-			notifyAll();
-			Model.paused2 = false;		
-	}
+//	public void run() {					
+//			notifyAll();
+//			Model.paused2 = false;		
+//	}
 }

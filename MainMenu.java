@@ -22,6 +22,7 @@ public class MainMenu extends JFrame implements ActionListener, ItemListener{
 	private int selectedGameMode = 1;
 	private int selectedLevel = 1;
 	private JButton play;
+	private JButton customLevel;
 	private JRadioButton onePlayer;
 	private JRadioButton twoPlayer;
 	private JComboBox levelChoice;
@@ -30,11 +31,12 @@ public class MainMenu extends JFrame implements ActionListener, ItemListener{
 		super("Arkanoid");
 		setSize(800, 600);
 		setResizable(false);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		//setLayout(new FlowLayout());
 		
 		play = new JButton("Jouer");
+		customLevel = new JButton("Créer son niveau");
 		play.addActionListener(this);
+		customLevel.addActionListener(this);
 		onePlayer = new JRadioButton("1 Joueur");
 		twoPlayer = new JRadioButton("2 Joueurs");
 		onePlayer.isSelected();
@@ -46,7 +48,7 @@ public class MainMenu extends JFrame implements ActionListener, ItemListener{
 		levelChoice = new JComboBox();
 		levelChoice.addItem("Niveau 1");
 		levelChoice.addItem("Niveau 2");
-		levelChoice.addItem("Personalisé NYI");
+		//levelChoice.addItem("Personalisé NYI");
 		levelChoice.setSelectedIndex(0);
 		levelChoice.addItemListener(this);
 		
@@ -61,6 +63,7 @@ public class MainMenu extends JFrame implements ActionListener, ItemListener{
 		topPanel.add(twoPlayer);
 		topPanel.add(levelChoice);
 		topPanel.add(play);
+		topPanel.add(customLevel);
 		
 		Container cp = getContentPane();
 		cp.add(topPanel, BorderLayout.NORTH);
@@ -73,10 +76,19 @@ public class MainMenu extends JFrame implements ActionListener, ItemListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		this.dispose();
-		Level lvl = new Level(selectedLevel, selectedGameMode);
-		
+		System.out.println(((JButton)e.getSource()).getText());
+		if(((JButton)e.getSource()).getText().equals("Créer son niveau")) {
+			CustomLevel customFrame = new CustomLevel(this.selectedGameMode);
+		}
+		else {
+			this.setVisible(false);
+			Level lvl = new Level(selectedLevel, selectedGameMode);
+		}
 	}
+	
+//	public int getGameMode() {
+//		return this.selectedGameMode;
+//	}
 
 
 
@@ -85,12 +97,12 @@ public class MainMenu extends JFrame implements ActionListener, ItemListener{
 		
 		if(onePlayer.isSelected()) {
 			//System.out.println("One player mode selected");
-			selectedGameMode = 1;
+			this.selectedGameMode = 1;
 		}
 		
 		if(twoPlayer.isSelected()) {
 			//System.out.println("Two player mode selected");
-			selectedGameMode = 2;
+			this.selectedGameMode = 2;
 		}
 		
 		selectedLevel = levelChoice.getSelectedIndex() + 1;

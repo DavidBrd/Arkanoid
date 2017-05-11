@@ -21,7 +21,7 @@ public class View extends Thread{
 	private JLabel scoreBonus;
 	private HighScoreManager highScoreManager;
 	private JLabel highScore;
-	private MainMenu mainMenu;
+	private DisplayView display;
 		
 	public View(Model model, int width, int height) {
 		
@@ -63,7 +63,7 @@ public class View extends Thread{
 		cp.add(topPanel, BorderLayout.NORTH);
 		topPanel.setBackground(Color.GRAY);
 				
-		DisplayView display = new DisplayView(this.model);
+		display = new DisplayView(this.model);
 		display.setSize( new Dimension(800, 600));
 		display.setBackground(Color.RED);
 		cp.add(display);
@@ -71,7 +71,7 @@ public class View extends Thread{
 		frame.setVisible(true);	
 	}
 	
-	public View(Model model, int width, int height, int n) {
+	/*public View(Model model, int width, int height, int n) {
 		
 		this.frame = new JFrame("TeteContreBrique");
 		this.model = model;
@@ -118,7 +118,7 @@ public class View extends Thread{
 		cp.add(display);
 			
 		frame.setVisible(true);	
-	}
+	}*/
 	
 	public void run() {
 		while(!Model.gameOver) {
@@ -127,7 +127,9 @@ public class View extends Thread{
 					if (Ball.nbBall <= 0) {
 						highScoreManager.addScore(System.getProperty("user.name"), Model.score);
 						Model.gameOver = true;
-						System.exit(0);
+						//System.exit(0);
+						frame.dispose();
+						Main.mainMenu.setVisible(true);
 					}
 					this.frame.setTitle("Arkakanoid FPS : "+Main.fpscounter.getFps());
 					this.score.setText("Score : " + this.model.score);

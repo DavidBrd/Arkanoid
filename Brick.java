@@ -68,7 +68,12 @@ public class Brick {
 	public void destroy() {
 		
 	}
-
+	
+	public void paintBrickCustom(Graphics gRaw) {
+		Graphics2D g = (Graphics2D) gRaw;
+		this.collider = new Rectangle2D.Double((int) this.positionX, (int) this.positionY, this.width, this.height);
+	}
+	
 	public void paintBrick(Graphics gRaw) {
 		Graphics2D g = (Graphics2D) gRaw;
 		this.collider = new Rectangle2D.Double((int) this.positionX, (int) this.positionY, this.width, this.height);

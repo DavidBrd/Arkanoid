@@ -6,7 +6,7 @@ public class FpsCounter extends Thread{
 	
 	public void run() {
 		while(!Model.gameOver) {
-			while(!Model.paused) {
+			if(!Model.paused) {
 				previousTime = System.nanoTime();
 				try {
 					Thread.sleep(500);

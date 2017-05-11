@@ -8,6 +8,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
 
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -21,12 +22,16 @@ public class View extends Thread{
 	private JLabel scoreBonus;
 	private HighScoreManager highScoreManager;
 	private JLabel highScore;
-	private MainMenu mainMenu;
+	private DisplayView display;
+	private JLabel gg;
+	private JLabel lose;
 		
 	public View(Model model, int width, int height) {
 		
 		this.frame = new JFrame("TeteContreBrique");
 		this.model = model;
+		this.gg = new JLabel(new ImageIcon("img/well_done.png"));
+		this.lose = new JLabel(new ImageIcon("img/game_over.jpg"));
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(800, 750);
@@ -63,7 +68,7 @@ public class View extends Thread{
 		cp.add(topPanel, BorderLayout.NORTH);
 		topPanel.setBackground(Color.GRAY);
 				
-		DisplayView display = new DisplayView(this.model);
+		display = new DisplayView(this.model);
 		display.setSize( new Dimension(800, 600));
 		display.setBackground(Color.RED);
 		cp.add(display);
@@ -71,7 +76,7 @@ public class View extends Thread{
 		frame.setVisible(true);	
 	}
 	
-	public View(Model model, int width, int height, int n) {
+	/*public View(Model model, int width, int height, int n) {
 		
 		this.frame = new JFrame("TeteContreBrique");
 		this.model = model;
@@ -118,16 +123,24 @@ public class View extends Thread{
 		cp.add(display);
 			
 		frame.setVisible(true);	
-	}
+	}*/
 	
 	public void run() {
 		while(!Model.gameOver) {
-			while(!Model.paused) {
+			if(!Model.paused) {
 				synchronized (this) {
 					if (Ball.nbBall <= 0) {
 						highScoreManager.addScore(System.getProperty("user.name"), Model.score);
 						Model.gameOver = true;
-						System.exit(0);
+						this.display.add(lose);
+						//System.exit(0);
+						//frame.dispose();
+						//Main.mainMenu.setVisible(true);
+					}
+					if(Model.nbBricks <= 0) {
+						Model.gameOver = true;
+						this.display.add(gg);
+						//frame.dispose();
 					}
 					this.frame.setTitle("Arkakanoid FPS : "+Main.fpscounter.getFps());
 					this.score.setText("Score : " + this.model.score);

@@ -12,7 +12,7 @@ public class Racket extends Thread {
 	private float positionY;
 	private float positionX;
 	private int width, height;
-	private float maxSpeed;
+	private float maxSpeed = 20;
 	private float speed;
 	private float positionCenteredX, positionCenteredY;
 	private Shape collider;
@@ -53,7 +53,7 @@ public class Racket extends Thread {
 
 		
 	public void moveLeft() {
-		if (leftBlock()) {
+		if (!leftBlock()) {
 			speed = -10;
 		} else {
 			speed = 0f;
@@ -104,11 +104,11 @@ public class Racket extends Thread {
 	
 	public void run() {
 		while(!Model.gameOver) {
-			while(!Model.paused) {		
+			if(!Model.paused) {		
 				checkRestraint();
 				this.positionX += this.speed; // Mettre dans une fonction uopdate? 		
 				try {			
-					Thread.sleep(10);
+					Thread.sleep(15);
 					if(Model.paused2){
 						wait();
 					}

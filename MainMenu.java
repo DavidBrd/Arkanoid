@@ -105,8 +105,16 @@ public class MainMenu extends JFrame implements ActionListener, ItemListener{
 			//System.out.println("Two player mode selected");
 			this.selectedGameMode = 2;
 		}
+		if(e.getItem() == "Niveau 1") {
+			this.selectedLevel = 1;
+		}
+		if(e.getItem() == "Niveau 2") {
+			this.selectedLevel = 2;
+		}
 		
-		selectedLevel = levelChoice.getSelectedIndex() + 1;
+		
+		
+		//selectedLevel = levelChoice.getSelectedIndex() + 1;
 		//System.out.println("Niveau " +(levelChoice.getSelectedIndex() + 1) + " selectionné");
 	}
 	

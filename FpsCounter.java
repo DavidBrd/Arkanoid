@@ -6,14 +6,17 @@ public class FpsCounter extends Thread{
 	
 	public void run() {
 		while(!Model.gameOver) {
-			previousTime = System.nanoTime();
-			try {
-				Thread.sleep(500);
-			} catch (Exception e) {
-				// TODO: handle exception
+			if(!Model.paused) {
+				previousTime = System.nanoTime();
+				try {
+					Thread.sleep(500);
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+				fps = (1_000_000_000/ (System.nanoTime() - previousTime));
+				//System.out.println("DeltaTime = "+(System.nanoTime() - previousTime));
+				previousTime = System.nanoTime();
 			}
-			fps = (1_000_000_000/ (System.nanoTime() - previousTime));
-			previousTime = System.nanoTime();
 		}
 		
 		

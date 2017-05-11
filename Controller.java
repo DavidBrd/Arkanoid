@@ -19,32 +19,32 @@ public class Controller implements KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		
-		
-		
 		if(e.getKeyChar() == 'p') {
-			Model.paused = !Model.paused;
-			System.out.println("PAUSED = "+Model.paused);
+			if(!Model.paused2) {
+				Model.paused2 = true;
+			} else {
+				State state = new State();
+				state.start();
+				Model.paused2 = false;
+			}
 		}
 		
-		if(e.getKeyChar() == 'd' && this.model.getRacket().getSpeed() <= this.model.getRacket().getMaxSpeed() ) {				
-				model.getRacket().moveRight();
-			}
-	
-		if(e.getKeyChar() == 'q' && this.model.getRacket().getSpeed() >= this.model.getRacket().getMaxSpeed()) {
-			model.getRacket().incrementSpeed(-acceleration);
+		if(e.getKeyChar() == 'd') {				
+			model.getRacket().moveRight();
 		}
+	
+		if(e.getKeyChar() == 'q') {
+			model.getRacket().moveLeft();
+		}
+		
+		
 				
 	}
 			
 	
 	@Override
 	public void keyReleased(KeyEvent e) {
-				
-		if(e.getKeyChar() == 'g' && Model.gameOver) {
-			Model.gameOver = false;
-			System.out.println("Game started");
-		}
-		
+					
 		if(e.getKeyChar() == 'd' && (model.getRacket().getSpeed() != 0)) {
 			model.getRacket().setSpeed(0);			
 		}
@@ -52,20 +52,17 @@ public class Controller implements KeyListener {
 		if(e.getKeyChar() == 'q' && (model.getRacket().getSpeed() != 0)) {
 			model.getRacket().setSpeed(0);
 		}
+			
 		
 	}
 
+	
 	@Override
 	public void keyTyped(KeyEvent e) {
-
-		if(e.getKeyChar() == 'd' && this.model.getRacket().getSpeed() <= this.model.getRacket().getMaxSpeed()) {
-			model.getRacket().incrementSpeed(acceleration);		
+		if(e.getKeyChar() == 'r' && Model.gameOver) {
+			this.view.getFrame().dispose();
+			//Main.mainMenu.setVisible(true);
 		}
-		
-		if(e.getKeyChar() == 'q' && this.model.getRacket().getSpeed() >= this.model.getRacket().getMaxSpeed()) {
-			model.getRacket().incrementSpeed(-acceleration);
-		}
-		
 	}
 	
 	

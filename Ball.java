@@ -6,7 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 
-public class Ball extends Thread {
+public class Ball {
 	private double positionX, positionY;
 	private double speedX = Main.BALL_SPEED;
 	private double speedY = Main.BALL_SPEED;
@@ -114,10 +114,10 @@ public class Ball extends Thread {
 	public String checkSideCollision(Racket racket) {					
 		synchronized (racket) {
 			if( this.ballIntersectsRacket(racket) ) {				
-				if ( (this.getPositionX() + this.getSize()/2) <= (racket.getPositionX() + 20) && ( this.speedX >= 0 ) ) {				
+				if ( (this.getPositionX() + this.getSize()/2) <= (racket.getPositionX() + 20/Model.gameMode) && ( this.speedX >= 0 ) ) {				
 					return "topLeft";	
 				}				
-				if ( (this.getPositionX() + this.getSize()/2) > ( (racket.getPositionX()+racket.getWidth()) - 20 ) && ( this.speedX < 0 ) )  {
+				if ( (this.getPositionX() + this.getSize()/2) > ( (racket.getPositionX()+racket.getWidth()) - 20/Model.gameMode ) && ( this.speedX < 0 ) )  {
 					return "topRight";
 				} 				
 				return "top";
@@ -127,7 +127,7 @@ public class Ball extends Thread {
 	}
 		
 	
-	public void update() {
+	public synchronized void update() {
 		positionX += speedX;
 		positionY += speedY;
 	
@@ -138,7 +138,9 @@ public class Ball extends Thread {
 		if ( positionY < 0) {
 			speedY = Main.BALL_SPEED;
 		} else if ( (positionY + size) > Main.HEIGHT) {
-			active = false;
+			System.out.println("[Debug] BALL PERDUE" +Ball.nbBall);
+			Ball.nbBall--;
+			active = false;				
 			//Model.gameOver = true;
 			//System.out.println("Balle perdue");
 			//speedY = -Main.BALL_SPEED;
@@ -172,18 +174,5 @@ public class Ball extends Thread {
 	
 	public void bounceTop() {
 		this.speedY = -Main.BALL_SPEED;
-	}
-	
-	public void run() {
-			while(!Model.paused){
-				//update();						
-				try {					
-					Thread.sleep(10);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		
 	}
 }

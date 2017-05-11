@@ -68,7 +68,12 @@ public class Brick {
 	public void destroy() {
 		
 	}
-
+	
+	public void paintBrickCustom(Graphics gRaw) {
+		Graphics2D g = (Graphics2D) gRaw;
+		this.collider = new Rectangle2D.Double((int) this.positionX, (int) this.positionY, this.width, this.height);
+	}
+	
 	public void paintBrick(Graphics gRaw) {
 		Graphics2D g = (Graphics2D) gRaw;
 		this.collider = new Rectangle2D.Double((int) this.positionX, (int) this.positionY, this.width, this.height);
@@ -77,7 +82,7 @@ public class Brick {
 			Font font = new Font("courrier", Font.BOLD, 28);
 			g.setFont(font);
 			g.setColor(Color.BLACK);
-			g.drawString("+10", (int)(this.positionX + this.width/2) - 20, (int)(this.positionY + this.height/2));
+			g.drawString("+"+(10*Main.SCORE_BONUS), (int)(this.positionX + this.width/2) - 20, (int)(this.positionY + this.height/2));
 			update();			
 		} else if (this.tapToDeath > 0) {
 			switch (this.tapToDeath) {
@@ -110,17 +115,17 @@ public class Brick {
 		
 	}
 	
-	public void run() {
-		while(!Model.gameOver && Model.gameOver) {			
-				while(tapToDeath <= 0 && active) {					
-					update();
-					//if (positionY <= 0) {active = false;}
-				} 
-				try {
-					Thread.sleep(33);
-				} catch (InterruptedException e) {				
-					e.printStackTrace();
-				}						
-		}
-	}
+//	public void run() {
+//		while(!Model.gameOver && Model.gameOver) {			
+//				while(tapToDeath <= 0 && active) {					
+//					update();
+//					//if (positionY <= 0) {active = false;}
+//				} 
+//				try {
+//					Thread.sleep(33);
+//				} catch (InterruptedException e) {				
+//					e.printStackTrace();
+//				}						
+//		}
+//	}
 }

@@ -12,12 +12,23 @@ public class Racket extends Thread {
 	private float positionY;
 	private float positionX;
 	private int width, height;
-	private float maxSpeed;
+	private float maxSpeed = 20;
 	private float speed;
 	private float positionCenteredX, positionCenteredY;
 	private Shape collider;
 	private Shape progress;
-
+	private Color racketColor = Color.BLACK;
+	
+	public Racket(float positionX, float positionY, int width, int height, Color color) {		
+		this.width = width;
+		this.height = height;
+		this.positionX = positionX; 
+		this.positionY = positionY - Main.OFFSET;
+		this.collider = new Rectangle2D.Double((int) this.positionX, (int) this.positionY, this.width, this.height);
+		this.progress = new Rectangle2D.Double(this.positionX, this.positionY, 0, this.height);
+		this.racketColor = color;
+	}
+	
 	public Racket(float positionX, float positionY, int width, int height) {		
 		this.width = width;
 		this.height = height;
@@ -39,9 +50,10 @@ public class Racket extends Thread {
 	
 	public float getRightEnd() {return (this.positionCenteredX + this.width);}
 	
+
 		
 	public void moveLeft() {
-		if (leftBlock()) {
+		if (!leftBlock()) {
 			speed = -10;
 		} else {
 			speed = 0f;
@@ -91,28 +103,28 @@ public class Racket extends Thread {
 	
 	
 	public void run() {
-		while(!Model.paused) {
-			
-			checkRestraint();
-			//if(this.positionCenteredX >= 400) {this.setPositionX(780);}
-			//System.out.println("Position x = "+this.positionX+" Position x - rw = "+(this.positionX-120));
-			this.positionX += this.speed; // Mettre dans une fonction uopdate? 
-			
-			try {
-				
-				Thread.sleep(10);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		while(!Model.gameOver) {
+			if(!Model.paused) {		
+				checkRestraint();
+				this.positionX += this.speed; // Mettre dans une fonction uopdate? 		
+				try {			
+					Thread.sleep(15);
+					if(Model.paused2){
+						wait();
+					}
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
 	}
 	
 	public void paintRacket(Graphics gRaw) {
 		Graphics2D g = (Graphics2D) gRaw;	
-		this.collider =  new Rectangle2D.Double((int) this.positionX, (int) this.positionY, this.width, this.height);
+		this.collider =  new Rectangle2D.Double((int) this.positionX, (int) this.positionY, this.width, this.height);	
 		//this.progress = new Rectangle2D.Double(this.positionX, this.positionY,  (( Model.score*10)/100) * this.width, this.height);
-		g.setColor(Color.BLACK);
+		g.setColor(this.racketColor);
 		g.draw(collider);
 		g.fill(collider);
 		g.setColor(Color.GREEN);

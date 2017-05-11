@@ -8,6 +8,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
 
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -17,8 +18,65 @@ public class View extends Thread{
 	private JFrame frame;
 	private Model model;
 	private JLabel score;
+	private JLabel ballesRestantes;
+	private JLabel scoreBonus;
+	private HighScoreManager highScoreManager;
+	private JLabel highScore;
+	private DisplayView display;
+	private JLabel gg;
+	private JLabel lose;
 		
 	public View(Model model, int width, int height) {
+		
+		this.frame = new JFrame("TeteContreBrique");
+		this.model = model;
+		this.gg = new JLabel(new ImageIcon("img/well_done.png"));
+		this.lose = new JLabel(new ImageIcon("img/game_over.jpg"));
+		
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setSize(800, 750);
+		frame.setResizable(false);
+		Container cp = frame.getContentPane();
+		
+		JPanel topPanel = new JPanel();
+		this.score = new JLabel("Score : 0 ");
+		score.setFont(new Font("courrier", Font.BOLD, 40));
+		score.setForeground(Color.RED);
+		
+		
+		ballesRestantes = new JLabel(" Balles : " + Ball.nbBall);
+		ballesRestantes.setFont(new Font("courrier", Font.BOLD, 40));
+		ballesRestantes.setForeground(Color.RED);
+		
+		scoreBonus = new JLabel(" X"+Main.SCORE_BONUS);
+		scoreBonus.setFont(new Font("courrier", Font.BOLD, 40));
+		scoreBonus.setForeground(Color.RED);
+		
+		highScoreManager = new HighScoreManager();
+		highScoreManager.loadScoreFile();
+		
+		highScore = new JLabel (highScoreManager.getHighscoreString());
+		highScore.setFont(new Font("courrier", Font.BOLD, 20));
+		highScore.setForeground(Color.ORANGE);
+				
+		topPanel.setLayout(new FlowLayout());
+		topPanel.add(score);	
+		topPanel.add(scoreBonus);
+		topPanel.add(ballesRestantes);
+		topPanel.add(highScore);
+		topPanel.setPreferredSize(new Dimension(800,150));
+		cp.add(topPanel, BorderLayout.NORTH);
+		topPanel.setBackground(Color.GRAY);
+				
+		display = new DisplayView(this.model);
+		display.setSize( new Dimension(800, 600));
+		display.setBackground(Color.RED);
+		cp.add(display);
+			
+		frame.setVisible(true);	
+	}
+	
+	/*public View(Model model, int width, int height, int n) {
 		
 		this.frame = new JFrame("TeteContreBrique");
 		this.model = model;
@@ -28,38 +86,78 @@ public class View extends Thread{
 		frame.setResizable(false);
 		Container cp = frame.getContentPane();
 		
-		JPanel rightPanel = new JPanel();
-		this.score = new JLabel("Score : 0");
-		score.setForeground(Color.blue);
-		score.setHorizontalAlignment(JLabel.CENTER);
+		JPanel topPanel = new JPanel();
+		this.score = new JLabel("Score : 0 ");
+		score.setFont(new Font("courrier", Font.BOLD, 40));
+		score.setForeground(Color.RED);
 		
-		rightPanel.setLayout(new BorderLayout());
-		rightPanel.add(score, BorderLayout.NORTH);
-		rightPanel.setPreferredSize(new Dimension(800,150));
-		cp.add(rightPanel, BorderLayout.NORTH);
-		rightPanel.setBackground(Color.BLACK);
 		
+		
+		ballesRestantes = new JLabel(" Balles : " + Ball.nbBall);
+		ballesRestantes.setFont(new Font("courrier", Font.BOLD, 40));
+		ballesRestantes.setForeground(Color.RED);
+		
+		scoreBonus = new JLabel(" X"+Main.SCORE_BONUS);
+		scoreBonus.setFont(new Font("courrier", Font.BOLD, 40));
+		scoreBonus.setForeground(Color.RED);
+		
+		highScoreManager = new HighScoreManager();
+		highScoreManager.loadScoreFile();
+		
+		highScore = new JLabel (highScoreManager.getHighscoreString());
+		highScore.setFont(new Font("courrier", Font.BOLD, 20));
+		highScore.setForeground(Color.ORANGE);
+				
+		topPanel.setLayout(new FlowLayout());
+		topPanel.add(score);	
+		topPanel.add(scoreBonus);
+		topPanel.add(ballesRestantes);
+		topPanel.add(highScore);
+		topPanel.setPreferredSize(new Dimension(800,150));
+		cp.add(topPanel, BorderLayout.NORTH);
+		topPanel.setBackground(Color.GRAY);
+				
 		DisplayView display = new DisplayView(this.model);
 		display.setSize( new Dimension(800, 600));
 		display.setBackground(Color.RED);
 		cp.add(display);
 			
 		frame.setVisible(true);	
-	}
+	}*/
 	
 	public void run() {
 		while(!Model.gameOver) {
-			synchronized (this) {
-				this.frame.setTitle("Arkakanoid FPS : "+Main.fpscounter.getFps());
-				this.score.setText("Score : " + this.model.score);
-			}				
-			this.frame.repaint();	
-			Main.fpscounter.interrupt();
-			try {
-				Thread.sleep(10);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}		
+			if(!Model.paused) {
+				synchronized (this) {
+					if (Ball.nbBall <= 0) {
+						highScoreManager.addScore(System.getProperty("user.name"), Model.score);
+						Model.gameOver = true;
+						this.display.add(lose);
+						//System.exit(0);
+						//frame.dispose();
+						//Main.mainMenu.setVisible(true);
+					}
+					if(Model.nbBricks <= 0) {
+						Model.gameOver = true;
+						this.display.add(gg);
+						//frame.dispose();
+					}
+					this.frame.setTitle("Arkakanoid FPS : "+Main.fpscounter.getFps());
+					this.score.setText("Score : " + this.model.score);
+					this.scoreBonus.setText(" X"+Main.SCORE_BONUS);
+					this.ballesRestantes.setText(" Balles : " + Ball.nbBall);				
+				}				
+				this.frame.repaint();	
+				Main.fpscounter.interrupt();
+				try {
+					Thread.sleep(10);
+					if(Model.paused2){
+						wait();
+					}
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}		
+			}
 		}		
 	}
 	
@@ -67,12 +165,13 @@ public class View extends Thread{
 
 }
 
+	@SuppressWarnings("serial")
 	class DisplayView extends JPanel {
 		private Model model;
 		
 		public DisplayView(Model model) {this.model = model;}
 			
-		public void paintComponent(Graphics g) {			
+		public synchronized void paintComponent(Graphics g) {			
 			
 			for (Brick brick : model.getBricks()) {
 				synchronized (brick) {
@@ -80,6 +179,10 @@ public class View extends Thread{
 						brick.paintBrick(g);
 					}
 			model.getRacket().paintRacket(g);
+			if( Model.gameMode == 2) {
+				model.getRacket2().paintRacket(g);
+			}
+				
 			for (Ball ball : model.getBalls()) {
 				ball.paintBall(g);
 			}

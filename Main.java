@@ -13,12 +13,12 @@ public class Main {
 	public static final int OFFSET = 50;
 	
 	public static final int BALL_RADIUS = 15;
-	public static double BALL_SPEED = 2f;
+	//public static double BALL_SPEED = 2f;
 	public static final double BRICK_HEIGHT = 15;	
 	public static final double BRICK_WIDTH = 50;
 	
-	public static final double MAX_GAME_DIFFICULTY = 5;
-	public static double DIFFICULTY_RATE = 1.05f;
+	public static final double MAX_GAME_DIFFICULTY = 100f;
+	public static double DIFFICULTY_RATE = 1.20f;
 	
 	public static int SCORE_BONUS = 1;
 	

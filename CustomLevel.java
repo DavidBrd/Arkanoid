@@ -30,6 +30,7 @@ public class CustomLevel extends JFrame implements MouseListener, ActionListener
 	private JRadioButton resistantBrick;
 	private JRadioButton veryResistantBrick;
 	private int tapToDeath = 1;
+	private int nbBricksCustom;
 	
 	public CustomLevel(int gameMode) {
 		
@@ -37,11 +38,13 @@ public class CustomLevel extends JFrame implements MouseListener, ActionListener
 		this.setSize(800, 750);
 		this.setResizable(false);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setLocationRelativeTo(null);
 		
 		this.bricksCustom = new ArrayList<Brick>();
 		this.gameMode = gameMode;
+		this.nbBricksCustom = 0;
 		
-		JButton save = new JButton("Enregistrer création");
+		JButton save = new JButton("Jouer le niveau");
 		this.weakBrick = new JRadioButton("Brique fragile");
 		this.resistantBrick = new JRadioButton("Brique résistante");
 		this.veryResistantBrick = new JRadioButton("Brique très résistante");
@@ -83,6 +86,7 @@ public class CustomLevel extends JFrame implements MouseListener, ActionListener
 		if(arg0.getX()+3 < this.mainPanel.getWidth() - Main.BRICK_WIDTH && arg0.getY()+68 < this.mainPanel.getHeight() - Main.BRICK_HEIGHT ) {
 			Brick b = new Brick(arg0.getX()+3, arg0.getY()+68, this.tapToDeath);
 			this.bricksCustom.add(b);
+			this.nbBricksCustom++;
 			System.out.println("[Création Briques] -> mouse x : " + arg0.getX() + " mouse y : " + arg0.getY());
 			b.paintBrick(g);
 		}		
@@ -114,9 +118,9 @@ public class CustomLevel extends JFrame implements MouseListener, ActionListener
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		if(((JButton)arg0.getSource()).getText().equals("Enregistrer création")) {
+		if(((JButton)arg0.getSource()).getText().equals("Jouer le niveau")) {
 			this.setVisible(false);
-			Level lvl = new Level(this.gameMode, this.bricksCustom);
+			Level lvl = new Level(this.gameMode, this.bricksCustom, this.nbBricksCustom);
 		}
 	}
 

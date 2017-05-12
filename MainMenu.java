@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
 public class MainMenu extends JFrame implements ActionListener, ItemListener{
+	
 	private int selectedGameMode = 1;
 	private int selectedLevel = 1;
 	private JButton play;
@@ -31,6 +32,8 @@ public class MainMenu extends JFrame implements ActionListener, ItemListener{
 		super("Arkanoid");
 		setSize(800, 600);
 		setResizable(false);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLocationRelativeTo(null);
 		//setLayout(new FlowLayout());
 		
 		play = new JButton("Jouer");
@@ -71,8 +74,6 @@ public class MainMenu extends JFrame implements ActionListener, ItemListener{
 			
 		setVisible(true);
 	}
-	
-	
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -85,30 +86,24 @@ public class MainMenu extends JFrame implements ActionListener, ItemListener{
 			Level lvl = new Level(selectedLevel, selectedGameMode);
 		}
 	}
-	
-//	public int getGameMode() {
-//		return this.selectedGameMode;
-//	}
-
-
 
 	@Override
 	public void itemStateChanged(ItemEvent e) {
 		
 		if(onePlayer.isSelected()) {
-			//System.out.println("One player mode selected");
 			this.selectedGameMode = 1;
 		}
 		
 		if(twoPlayer.isSelected()) {
-			//System.out.println("Two player mode selected");
 			this.selectedGameMode = 2;
 		}
+		if(e.getItem() == "Niveau 1") {
+			this.selectedLevel = 1;
+		}
+		if(e.getItem() == "Niveau 2") {
+			this.selectedLevel = 2;
+		}
 		
-		selectedLevel = levelChoice.getSelectedIndex() + 1;
-		//System.out.println("Niveau " +(levelChoice.getSelectedIndex() + 1) + " selectionné");
-	}
-	
-	
+	}	
 
 }

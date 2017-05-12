@@ -9,7 +9,7 @@ public class Difficulty extends TimerTask{
 			if(!Model.paused) {
 				if (Main.BALL_SPEED <= Main.MAX_GAME_DIFFICULTY) {
 					Main.BALL_SPEED *= Main.DIFFICULTY_RATE;
-					}
+				}
 			}
 		}		
 	}

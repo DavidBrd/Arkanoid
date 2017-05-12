@@ -41,8 +41,7 @@ public class Collision extends Thread{
 					}
 				}
 			}
-			}
-			
+		}			
 	}
 	
 	
@@ -60,22 +59,34 @@ public class Collision extends Thread{
 							case "top":					
 								ball.bounceTop();							
 								brick.setTapToDeath(brick.getTapToDeath()-1);						
-								if (brick.getTapToDeath() <= 0) {Model.score+=10*Main.SCORE_BONUS;}
+								if (brick.getTapToDeath() <= 0) {
+									model.decrNbBricks();
+									model.updateScore();
+								}
 								break;
 							case "bottom":
 								ball.bounceBottom();
 								brick.setTapToDeath(brick.getTapToDeath()-1);
-								if (brick.getTapToDeath() <= 0) {Model.score+=10*Main.SCORE_BONUS;}
+								if (brick.getTapToDeath() <= 0) {
+									model.decrNbBricks();
+									model.updateScore();
+								}
 								break;
 							case "left":
 								ball.bounceLeft();
 								brick.setTapToDeath(brick.getTapToDeath()-1);
-								if (brick.getTapToDeath() <= 0) {Model.score+=10*Main.SCORE_BONUS;}
+								if (brick.getTapToDeath() <= 0) {
+									model.decrNbBricks();
+									model.updateScore();
+								}
 								break;
 							case "right":
 								ball.bounceRight();
 								brick.setTapToDeath(brick.getTapToDeath()-1);
-								if (brick.getTapToDeath() <= 0) {Model.score+=10*Main.SCORE_BONUS;}
+								if (brick.getTapToDeath() <= 0) {
+									model.decrNbBricks();
+									model.updateScore();
+								}
 								break;
 							case "no collision":
 								break;
@@ -87,14 +98,13 @@ public class Collision extends Thread{
 				} 
 			}	
 		}
-		
 	}
 		
 	public void run() {
 		
 		while(!Model.gameOver){			
 			
-			while(!Model.paused) {
+			if(!Model.paused) {
 				
 				ballRacketCollisions(model.getRacket());	
 				if(Model.gameMode == 2) {
@@ -103,14 +113,14 @@ public class Collision extends Thread{
 				ballBrickCollisions();
 				for (Ball ball : model.getBalls()) {
 					if (ball.isActive()) {
-						ball.update();
+						ball.update(model);
 					}					
 				}	
 				try {				
 					Thread.sleep(10);
-					if(Model.paused2) {
-						wait();
-					}
+//					if(Model.paused) {
+//						wait();
+//					}
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

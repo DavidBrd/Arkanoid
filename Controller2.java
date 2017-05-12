@@ -19,15 +19,15 @@ public class Controller2 implements KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		
-		if(e.getKeyChar() == 'p') {
-			if(!Model.paused2) {
-				Model.paused2 = true;
-			} else {
-				State state = new State();
-				state.start();
-				Model.paused2 = false;
-			}
-		}
+//		if(e.getKeyChar() == 'p') {
+//			if(!Model.paused2) {
+//				Model.paused2 = true;
+//			} else {
+//				State state = new State();
+//				state.start();
+//				Model.paused2 = false;
+//			}
+//		}
 				
 		if(e.getKeyChar() == 'm') {				
 			model.getRacket2().moveRight();
@@ -56,8 +56,7 @@ public class Controller2 implements KeyListener {
 
 	
 	@Override
-	public void keyTyped(KeyEvent e) {
-	}
+	public void keyTyped(KeyEvent e) {}
 	
 	
 }

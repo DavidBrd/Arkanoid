@@ -9,6 +9,7 @@ import java.io.Serializable;
 import javax.swing.JPanel;
 
 public class Score implements Serializable{
+	
 	private int score;
 	private String name;
 	

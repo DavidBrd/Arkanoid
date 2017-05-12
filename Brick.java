@@ -19,7 +19,8 @@ public class Brick {
 	public Brick(double x, double y) {
 		positionX = x;
 		positionY = y;
-		this.collider = new Rectangle2D.Double((int) this.positionX, (int) this.positionY, this.width, this.height);	
+		this.collider = new Rectangle2D.Double((int) this.positionX, (int) this.positionY, this.width, this.height);
+		this.tapToDeath = 1;
 	}
 	
 	public Brick(double x, double y, int tapToDeath) {
@@ -97,9 +98,7 @@ public class Brick {
 				break;
 			default:
 				break;
-			}
-		
-		
+			}		
 			//System.out.println("Dessin Brick");
 			g.draw(collider);
 			g.fill(collider);		
@@ -108,24 +107,7 @@ public class Brick {
 			
 	}
 	
-	public synchronized void update() {
-		
-			positionY += 0.9f;
-			
-		
-	}
-	
-	public void run() {
-		while(!Model.gameOver && Model.gameOver) {			
-				while(tapToDeath <= 0 && active) {					
-					update();
-					//if (positionY <= 0) {active = false;}
-				} 
-				try {
-					Thread.sleep(33);
-				} catch (InterruptedException e) {				
-					e.printStackTrace();
-				}						
-		}
+	public synchronized void update() {		
+			positionY += 0.9f;		
 	}
 }

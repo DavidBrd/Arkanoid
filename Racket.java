@@ -9,6 +9,7 @@ import java.awt.geom.Rectangle2D;
 import javax.swing.RepaintManager;
 
 public class Racket extends Thread {
+	
 	private float positionY;
 	private float positionX;
 	private int width, height;
@@ -49,12 +50,10 @@ public class Racket extends Thread {
 	public boolean leftBlock() {return ((positionX+speed) <= 0);}
 	
 	public float getRightEnd() {return (this.positionCenteredX + this.width);}
-	
-
 		
 	public void moveLeft() {
 		if (!leftBlock()) {
-			speed = -10;
+			speed = -13;
 		} else {
 			speed = 0f;
 		}
@@ -62,7 +61,7 @@ public class Racket extends Thread {
 	
 	public void moveRight() {
 		if (getRightEnd() < Main.WIDTH) {
-			speed = +10;
+			speed = +13;
 		} else {
 			speed = 0f;
 		}
@@ -104,14 +103,14 @@ public class Racket extends Thread {
 	
 	public void run() {
 		while(!Model.gameOver) {
-			while(!Model.paused) {		
+			if(!Model.paused) {		
 				checkRestraint();
 				this.positionX += this.speed; // Mettre dans une fonction uopdate? 		
 				try {			
 					Thread.sleep(15);
-					if(Model.paused2){
-						wait();
-					}
+//					if(Model.paused2){
+//						wait();
+//					}
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -123,12 +122,9 @@ public class Racket extends Thread {
 	public void paintRacket(Graphics gRaw) {
 		Graphics2D g = (Graphics2D) gRaw;	
 		this.collider =  new Rectangle2D.Double((int) this.positionX, (int) this.positionY, this.width, this.height);	
-		//this.progress = new Rectangle2D.Double(this.positionX, this.positionY,  (( Model.score*10)/100) * this.width, this.height);
 		g.setColor(this.racketColor);
 		g.draw(collider);
 		g.fill(collider);
-		g.setColor(Color.GREEN);
-		//g.draw(progress);
-		//g.fill(progress);
+
 	}
 }

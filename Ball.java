@@ -14,15 +14,12 @@ public class Ball {
 	private boolean active;
 	private Shape collider;
 	
-	public static int nbBall = 0;
-	
 	public Ball(int positionX, int positionY, double speedX, double speedY) {
 		this.positionX = positionX;
 		this.positionY = positionY;
 		this.speedX = speedX;
 		this.speedY = speedY;
 		active = true;
-		nbBall++;
 		this.collider = new Ellipse2D.Double(this.positionX, this.positionY, Main.BALL_RADIUS, Main.BALL_RADIUS);
 	}
 	
@@ -86,23 +83,6 @@ public class Ball {
 						
 				
 			}
-			
-			
-			/*
-			if ( this.ballIntersectsBrick(brick) ) {
-				if ( xLeftBrick <= this.positionX && this.positionX <= xRightBrick ) {
-					if ( this.speedY > 0) {
-						return "top";
-					} else {
-						return "bottom";
-					}
-				} else if ( this.speedX > 0 ) {
-					return "left";
-				} else {
-					return "right";
-				}								
-			}
-			*/
 			return "no collision";
 		
 	}	
@@ -127,7 +107,7 @@ public class Ball {
 	}
 		
 	
-	public synchronized void update() {
+	public synchronized void update(Model model) {
 		positionX += speedX;
 		positionY += speedY;
 	
@@ -138,15 +118,9 @@ public class Ball {
 		if ( positionY < 0) {
 			speedY = Main.BALL_SPEED;
 		} else if ( (positionY + size) > Main.HEIGHT) {
-			System.out.println("[Debug] BALL PERDUE" +Ball.nbBall);
-			Ball.nbBall--;
-			active = false;				
-			//Model.gameOver = true;
-			//System.out.println("Balle perdue");
-			//speedY = -Main.BALL_SPEED;
-			//positionX = 400; //Positon de réaparition de la balle
-			//positionY = 300;
-			
+			System.out.println("[Debug] BALL PERDUE" + model.getBallNumber());
+			model.decrBallNumber();
+			active = false;			
 		}
 	}
 	

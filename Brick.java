@@ -14,6 +14,7 @@ public class Brick {
 	private boolean active = true;
 	private int tapToDeath = 1;
 	private Shape collider;
+	private Color purple = new Color(161, 0, 175);
 
 	
 	public Brick(double x, double y) {
@@ -82,19 +83,19 @@ public class Brick {
 		if (this.tapToDeath <= 0 && active && positionY < 150) {
 			Font font = new Font("courrier", Font.BOLD, 28);
 			g.setFont(font);
-			g.setColor(Color.BLACK);
+			g.setColor(Color.RED);
 			g.drawString("+"+(10*Main.SCORE_BONUS), (int)(this.positionX + this.width/2) - 20, (int)(this.positionY + this.height/2));
 			update();			
 		} else if (this.tapToDeath > 0) {
 			switch (this.tapToDeath) {
 			case 1:
-				g.setColor(Color.GREEN);
+				g.setColor(new Color(8, 186, 8));
 				break;
 			case 2:
 				g.setColor(Color.ORANGE);
 				break;
 			case 3:
-				g.setColor(Color.RED);
+				g.setColor(this.purple);
 				break;
 			default:
 				break;

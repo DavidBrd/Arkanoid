@@ -37,6 +37,7 @@ public class View extends Thread{
 		this.model = model;
 		this.gg = new JLabel(new ImageIcon("img/well_done.png"));
 		this.lose = new JLabel(new ImageIcon("img/game_over.jpg"));
+
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(800, 750);
@@ -44,24 +45,24 @@ public class View extends Thread{
 		Container cp = frame.getContentPane();
 		
 		JPanel topPanel = new JPanel();
-		this.score = new JLabel("Score : 0 ");
-		score.setFont(new Font("courrier", Font.BOLD, 40));
+		this.score = new JLabel("0 pts");
+		score.setFont(new Font("courrier", Font.BOLD, 60));
 		score.setForeground(Color.RED);
 		
 		
 		ballesRestantes = new JLabel(" Balles : " + model.getBallNumber());
-		ballesRestantes.setFont(new Font("courrier", Font.BOLD, 40));
-		ballesRestantes.setForeground(Color.RED);
+		ballesRestantes.setFont(new Font("courrier", Font.BOLD, 55));
+		ballesRestantes.setForeground(Color.GREEN);
 		
 		scoreBonus = new JLabel(" X"+Main.SCORE_BONUS);
-		scoreBonus.setFont(new Font("courrier", Font.BOLD, 40));
-		scoreBonus.setForeground(Color.RED);
+		scoreBonus.setFont(new Font("courrier", Font.BOLD, 55));
+		scoreBonus.setForeground(Color.YELLOW);
 		
 		highScoreManager = new HighScoreManager();
 		highScoreManager.loadScoreFile();
 		
 		highScore = new JLabel (highScoreManager.getHighscoreString());
-		highScore.setFont(new Font("courrier", Font.BOLD, 20));
+		highScore.setFont(new Font("courrier", Font.BOLD, 30));
 		highScore.setForeground(Color.ORANGE);
 				
 		topPanel.setLayout(new FlowLayout());
@@ -99,7 +100,7 @@ public class View extends Thread{
 					}
 					
 					this.frame.setTitle("Arkakanoid FPS : "+Main.fpscounter.getFps());
-					this.score.setText("Score : " + this.model.getScore());
+					this.score.setText(this.model.getScore() + " pts");
 					this.scoreBonus.setText(" X"+Main.SCORE_BONUS);
 					this.ballesRestantes.setText(" Balles : " + model.getBallNumber());				
 				}				
@@ -126,19 +127,21 @@ public class View extends Thread{
 	@SuppressWarnings("serial")
 	class DisplayView extends JPanel {
 		private Model model;
+		private Image background;
 		
 		public DisplayView(Model model) {
 			this.model = model;
+			try {
+				this.background = ImageIO.read(new File("img/background.jpg"));
+			} catch (IOException e) {
+				e.printStackTrace();
+				// TODO: handle exception
+			}
 		}
 			
 		public synchronized void paintComponent(Graphics g) {	
-			
-//			try{
-//				Image background = ImageIO.read(new File("img/background.jpg"));
-//				g.drawImage(background, 0, 0, this.getWidth(), this.getHeight(), this);
-//			}catch(IOException e) {
-//				e.printStackTrace();
-//			}
+		
+			g.drawImage(this.background, 0, 0, this.getWidth(), this.getHeight(), this);
 			
 			for (Brick brick : model.getBricks()) {
 				synchronized (brick) {

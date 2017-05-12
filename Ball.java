@@ -25,7 +25,7 @@ public class Ball {
 	
 	public void paintBall(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
-		g2.setColor(Color.GRAY);
+		g2.setColor(new Color(255, 255, 0));
 		this.collider = new Ellipse2D.Double(this.positionX, this.positionY, Main.BALL_RADIUS, Main.BALL_RADIUS);
 		if(active) {
 			g2.draw(collider);

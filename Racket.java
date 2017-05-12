@@ -18,7 +18,7 @@ public class Racket extends Thread {
 	private float positionCenteredX, positionCenteredY;
 	private Shape collider;
 	private Shape progress;
-	private Color racketColor = Color.BLACK;
+	private Color racketColor = new Color(43, 219, 195);
 	
 	public Racket(float positionX, float positionY, int width, int height, Color color) {		
 		this.width = width;

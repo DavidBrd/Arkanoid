@@ -19,19 +19,28 @@ public class Collision extends Thread{
 					
 					switch (resCollision) {
 					case "topRight":					
-						ball.bounceTopRight();
+						ball.bounceTopRight(model);
+						if(ball.isEnemy() && ball.isActive()) {
+							racket.remove();
+						}
 						if (racket.getSpeed()!=0) {
 							ball.multiplySpeed(1.2f);
 						}	
 						break;
 					case "topLeft":
-						ball.bounceTopLeft();
+						ball.bounceTopLeft(model);
+						if(ball.isEnemy() && ball.isActive()) {
+							racket.remove();
+						}
 						if (racket.getSpeed()!=0) {
 							ball.multiplySpeed(1.2f);
 						}	
 						break;
 					case "top":
-						ball.bounceTop();
+						ball.bounceTop(model);
+						if(ball.isEnemy() && ball.isActive()) {
+							racket.remove();
+						}
 						if (racket.getSpeed()!=0) {
 							ball.multiplySpeed(1.2f);
 						}	
@@ -39,6 +48,7 @@ public class Collision extends Thread{
 					default:
 						break;
 					}
+					
 				}
 			}
 			}
@@ -55,36 +65,49 @@ public class Collision extends Thread{
 						if(brick.getTapToDeath() > 0) {
 						
 							String resCollision = ball.checkCollisionBrick(brick);
-						
+							double x = brick.getPositionX();
+							double y = brick.getPositionY();
 							switch (resCollision) {
 							case "top":					
-								ball.bounceTop();							
+								ball.bounceTop(model);							
 								brick.setTapToDeath(brick.getTapToDeath()-1);						
 								if (brick.getTapToDeath() <= 0) {
+									if(brick.getBonusType() != -1) {
+										model.addBonus(new Bonus(x, y, brick.getBonusType()));
+									}
 									model.decrNbBricks();
 									model.updateScore();
 								}
 								break;
 							case "bottom":
-								ball.bounceBottom();
+								ball.bounceBottom(model);
 								brick.setTapToDeath(brick.getTapToDeath()-1);
 								if (brick.getTapToDeath() <= 0) {
+									if(brick.getBonusType() != -1) {
+										model.addBonus(new Bonus(x, y, brick.getBonusType()));
+									}
 									model.decrNbBricks();
 									model.updateScore();
 								}
 								break;
 							case "left":
-								ball.bounceLeft();
+								ball.bounceLeft(model);
 								brick.setTapToDeath(brick.getTapToDeath()-1);
 								if (brick.getTapToDeath() <= 0) {
+									if(brick.getBonusType() != -1) {
+										model.addBonus(new Bonus(x, y, brick.getBonusType()));
+									}
 									model.decrNbBricks();
 									model.updateScore();
 								}
 								break;
 							case "right":
-								ball.bounceRight();
+								ball.bounceRight(model);
 								brick.setTapToDeath(brick.getTapToDeath()-1);
 								if (brick.getTapToDeath() <= 0) {
+									if(brick.getBonusType() != -1) {
+										model.addBonus(new Bonus(x, y, brick.getBonusType()));
+									}
 									model.decrNbBricks();
 									model.updateScore();
 								}
@@ -99,8 +122,27 @@ public class Collision extends Thread{
 				} 
 			}	
 		}
-		
 	}
+		public void bonusRacketCollisions(Racket racket) {
+			for (Bonus bonus : model.getBonus()) {
+				if(bonus.isActive() && bonus.racketCollision(racket)) {
+					switch (bonus.getBonusType()) {
+					case 1:
+						System.out.println("Bonus ralenti");
+						model.setBallSpeed(2.1f);
+						break;
+					case 2:
+						System.out.println("Bonus Balle en feu!");
+						break;
+					default:
+						break;
+					}
+					bonus.setActive(false);
+				}
+			}
+		}
+		
+	
 		
 	public void run() {
 		
@@ -108,9 +150,11 @@ public class Collision extends Thread{
 			
 			if(!Model.paused) {
 				
-				ballRacketCollisions(model.getRacket());	
+				ballRacketCollisions(model.getRacket());
+				bonusRacketCollisions(model.getRacket());
 				if(Model.gameMode == 2) {
 					ballRacketCollisions(model.getRacket2());
+					bonusRacketCollisions(model.getRacket2());
 				}			
 				ballBrickCollisions();
 				for (Ball ball : model.getBalls()) {
@@ -118,6 +162,7 @@ public class Collision extends Thread{
 						ball.update(model);
 					}					
 				}	
+				model.updateBonus();
 				try {				
 					Thread.sleep(10);
 					if(Model.paused2) {

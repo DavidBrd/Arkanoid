@@ -18,6 +18,7 @@ public class Racket extends Thread {
 	private Shape collider;
 	private Shape progress;
 	private Color racketColor = Color.BLACK;
+	private boolean active;
 	
 	public Racket(float positionX, float positionY, int width, int height, Color color) {		
 		this.width = width;
@@ -27,6 +28,7 @@ public class Racket extends Thread {
 		this.collider = new Rectangle2D.Double((int) this.positionX, (int) this.positionY, this.width, this.height);
 		this.progress = new Rectangle2D.Double(this.positionX, this.positionY, 0, this.height);
 		this.racketColor = color;
+		this.active = true;
 	}
 	
 	public Racket(float positionX, float positionY, int width, int height) {		
@@ -36,6 +38,15 @@ public class Racket extends Thread {
 		this.positionY = positionY - Main.OFFSET;
 		this.collider = new Rectangle2D.Double((int) this.positionX, (int) this.positionY, this.width, this.height);
 		this.progress = new Rectangle2D.Double(this.positionX, this.positionY, 0, this.height);
+		this.active = true;
+	}
+	
+	public boolean isActive() {
+		return active;
+	}
+	
+	public void setActive(boolean bool) {
+		this.active = bool;
 	}
 	
 	public Shape getProgressShape() {
@@ -66,6 +77,12 @@ public class Racket extends Thread {
 		} else {
 			speed = 0f;
 		}
+	}
+	
+	public void remove() {
+		this.active = false;
+		this.positionX = -50;
+		this.positionY = -50;
 	}
 	
 	public float getCenteredPositionX() {return this.positionX;} //TODO : retourne la position centrée 
@@ -124,10 +141,10 @@ public class Racket extends Thread {
 		Graphics2D g = (Graphics2D) gRaw;	
 		this.collider =  new Rectangle2D.Double((int) this.positionX, (int) this.positionY, this.width, this.height);	
 		//this.progress = new Rectangle2D.Double(this.positionX, this.positionY,  (( Model.score*10)/100) * this.width, this.height);
-		g.setColor(this.racketColor);
+		g.setColor(this.racketColor);	
 		g.draw(collider);
 		g.fill(collider);
-		g.setColor(Color.GREEN);
+		g.setColor(Color.GREEN);			
 		//g.draw(progress);
 		//g.fill(progress);
 	}
